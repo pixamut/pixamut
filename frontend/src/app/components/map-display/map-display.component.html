@@ -18,20 +18,21 @@
   </div>
 </div>
 
-<ion-modal #modal trigger="open-modal" [isOpen]="isModalOpen" [initialBreakpoint]="1" [backdropDismiss]="false"
+<ion-modal #modal [isOpen]="isModalOpen" [initialBreakpoint]="1" [backdropDismiss]="false"
   [backdropBreakpoint]="1">
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Pixel#{{selectedPixel?.y}}{{selectedPixel?.x}}</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="isModalOpen = false">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
+        <ion-title *ngIf="selectedPixel">
+          Pixel#{{selectedPixel!.y < 10 ? '0' + selectedPixel!.y : selectedPixel!.y}}{{selectedPixel!.x < 10 ? '0' + selectedPixel!.x : selectedPixel!.x}} </ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="isModalOpen = false">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-padding">
+    <ion-content>
       <ion-segment-view>
         <ion-segment-content id="first">
           <ion-item>
@@ -95,11 +96,11 @@
     <ion-footer>
       <ion-toolbar>
 
-      <ion-button expand="block">
-        <ion-label>Stake</ion-label>
-        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-      </ion-button>
-    </ion-toolbar>
+        <ion-button expand="block">
+          <ion-label>Stake</ion-label>
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </ion-toolbar>
     </ion-footer>
   </ng-template>
 </ion-modal>

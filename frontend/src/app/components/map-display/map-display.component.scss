@@ -97,6 +97,12 @@ ion-modal {
   top: auto;
 
   ion-list-header {
-    margin-top : 0px;
+    ion-label {
+      margin-top: 0px;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 15px;
+    }
   }
 }

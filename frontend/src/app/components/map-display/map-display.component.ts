@@ -14,15 +14,13 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('minimap', { static: true }) minimapElement!: ElementRef<HTMLDivElement>;
   public selectedPixel: { x: number; y: number } | null = null;
   public isModalOpen: boolean = false;
+  public isInit = false;
   private app: Application | null = null;
   private minimapApp: Application | null = null;
   private viewport: Viewport | null = null;
   private layer: Container | null = null;
   private minimapViewport: HTMLElement | null = null;
-  private isDragging = false;
-  private lastPosition: Point | null = null;
   private currentScale = 1;
-  private isInit = false;
   private resizeObserver: ResizeObserver | null = null;
   private selectedTile: Graphics | null = null;
   private tileColors: Map<string, number> = new Map();
@@ -229,7 +227,6 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
           const coords = this.getTileCoordinates(tile);
           if (coords) {
             console.log(`Clicked/touched tile at (${coords.x}, ${coords.y})`);
-            
             // Désactiver temporairement l'effet de survol
             tile.eventMode = 'none';
             
@@ -237,15 +234,15 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
             
             // Réinitialiser le pointeur après un court délai
             setTimeout(() => {
+              
               if (tile === this.selectedTile) {
                 this.drawTileWithColor(tile, color);
                 this.selectedTile = null;
                 this.selectedPixel = null;
-                this.isModalOpen = true;
-                // Réactiver l'effet de survol
+
                 tile.eventMode = 'static';
               }
-            }, 500); // Attendre 500ms avant de réinitialiser
+            },100); // Attendre 500ms avant de réinitialiser
           }
         });
 
@@ -255,6 +252,7 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
           const coords = this.getTileCoordinates(tile);
           if (coords) {
             console.log(`Touch started on tile at (${coords.x}, ${coords.y})`);
+            this.drawTileWithColor(tile, color);
             
             // Désactiver temporairement l'effet de survol
             tile.eventMode = 'none';
@@ -271,7 +269,7 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
                 // Réactiver l'effet de survol
                 tile.eventMode = 'static';
               }
-            }, 500); // Attendre 500ms avant de réinitialiser
+            }, 100); // Attendre 500ms avant de réinitialiser
           }
         });
 
@@ -288,6 +286,7 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private selectTile(tile: Graphics, x: number, y: number) {
+    console.log('selectTile', {x, y, selectedTile: this.selectedTile});
     // Désélectionner la tuile précédente si elle existe
     if (this.selectedTile) {
       const prevCoords = this.getTileCoordinates(this.selectedTile);
@@ -296,6 +295,7 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
         this.drawTileWithColor(this.selectedTile, prevColor);
       }
     }
+    this.isModalOpen = true;
 
     // Sélectionner la nouvelle tuile
     this.selectedTile = tile;

@@ -67,7 +67,7 @@ const MapDisplay: React.FC<Props> = () => {
           })
           .clampZoom({
             minScale: 0.1,
-            maxScale: 10,
+            maxScale: 3,
           });
       } else {
         // Mobile configuration
@@ -87,17 +87,24 @@ const MapDisplay: React.FC<Props> = () => {
           })
           .clampZoom({
             minScale: 0.1,
-            maxScale: 10,
+            maxScale: 3,
           });
       }
 
       // Adjust scale calculation to better handle mobile screens
       const widthScale = containerRef.current.clientWidth / worldWidth;
       const heightScale = containerRef.current.clientHeight / worldHeight;
-      const scale = Math.min(widthScale, heightScale) * 0.8; // Add slight padding
+      const scale = widthScale * 0.45;
 
       viewport.setZoom(scale);
-      viewport.moveCenter(worldWidth / 2, worldHeight / 2);
+      
+      // Center the viewport with offset to account for the container size
+      const offsetX = (containerRef.current.clientWidth - (worldWidth * scale)) / 2.2;
+      const offsetY = (containerRef.current.clientHeight - (worldHeight * scale)) / 2.2;
+      viewport.moveCenter(
+        worldWidth / 2 + offsetX / scale,
+        worldHeight / 2 + offsetY / scale
+      );
 
       const layer = new Container();
       layer.eventMode = "static";
@@ -119,7 +126,19 @@ const MapDisplay: React.FC<Props> = () => {
         if (containerRef.current && viewport) {
           viewport.screenWidth = containerRef.current.clientWidth;
           viewport.screenHeight = containerRef.current.clientHeight;
-          viewport.moveCenter(worldWidth / 2, worldHeight / 2);
+          // Recalculate scale on resize
+          const newWidthScale = containerRef.current.clientWidth / worldWidth;
+          const newHeightScale = containerRef.current.clientHeight / worldHeight;
+          const newScale = newWidthScale * 0.45;
+          
+          viewport.setZoom(newScale);
+          // Recenter the viewport with offset
+          const newOffsetX = (containerRef.current.clientWidth - (worldWidth * newScale)) / 2.2;
+          const newOffsetY = (containerRef.current.clientHeight - (worldHeight * newScale)) / 2.2;
+          viewport.moveCenter(
+            worldWidth / 2 + newOffsetX / newScale,
+            worldHeight / 2 + newOffsetY / newScale
+          );
         }
       };
 

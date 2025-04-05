@@ -30,8 +30,8 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly BASE_PIXEL_SIZE = 32;
   private readonly WIDTH = 100;
   private readonly HEIGHT = 100;
-  private readonly MIN_SCALE = 0.1;
-  private readonly MAX_SCALE = 10;
+  private readonly MIN_SCALE = 0.05;
+  private readonly MAX_SCALE = 20;
   private readonly ZOOM_STEP = 0.2;
   private readonly SELECTION_COLOR = 0x00ff00; // Couleur verte pour la sélection
   private readonly HOVER_COLOR = 0x666666; // Couleur grise pour le survol
@@ -86,7 +86,7 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
       resolution: window.devicePixelRatio || 1,
       antialias: true,
       backgroundColor: 0xffffff,
-      eventMode: 'static', // Enable interaction
+      eventMode: 'static',
       eventFeatures: {
         move: true,
         globalMove: true,
@@ -100,8 +100,8 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
     // Initialize minimap
     this.minimapApp = new Application();
     await this.minimapApp.init({
-      width: 200,
-      height: 200,
+      width: 150,
+      height: 150,
       backgroundAlpha: 1,
       resolution: 1,
       antialias: true,
@@ -128,19 +128,54 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.viewport.eventMode = "static";
     this.viewport.sortableChildren = true;
+    this.viewport.interactive = true;
+    this.viewport.cursor = 'grab';
 
+    // Configuration du zoom et des interactions
     this.viewport
-      .drag()
-      .pinch({
-        percent: 1,
-        noDrag: false,
-        factor: 2,
+      .drag({
+        mouseButtons: 'all',
+        pressDrag: true
       })
-      .wheel()
+      .pinch({
+        percent: 2,
+        factor: 2
+      })
+      .wheel({
+        percent: 0.1,
+        smooth: 5
+      })
+      .decelerate({
+        friction: 0.95,
+        bounce: 0.8,
+        minSpeed: 0.01
+      })
       .clampZoom({
         minScale: this.MIN_SCALE,
-        maxScale: this.MAX_SCALE,
+        maxScale: this.MAX_SCALE
       });
+
+    // Ajouter des gestionnaires d'événements pour le curseur
+    this.viewport.on('pointerdown', () => {
+      this.viewport!.cursor = 'grabbing';
+    });
+    this.viewport.on('pointerup', () => {
+      this.viewport!.cursor = 'grab';
+    });
+    this.viewport.on('pointerupoutside', () => {
+      this.viewport!.cursor = 'grab';
+    });
+
+    // Désactiver le zoom natif du navigateur sur mobile
+    this.container.nativeElement.addEventListener('gesturestart', (e) => e.preventDefault());
+    this.container.nativeElement.addEventListener('gesturechange', (e) => e.preventDefault());
+    this.container.nativeElement.addEventListener('gestureend', (e) => e.preventDefault());
+
+    // Gestionnaires d'événements pour le zoom
+    this.viewport.on('zoomed', ({ viewport }) => {
+      this.currentScale = viewport.scale.x;
+      this.updateMinimapViewport();
+    });
 
     // Create content layer
     this.layer = new Container();
@@ -238,7 +273,7 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
               if (tile === this.selectedTile) {
                 this.drawTileWithColor(tile, color);
                 this.selectedTile = null;
-                this.selectedPixel = null;
+                // this.selectedPixel = null;
 
                 tile.eventMode = 'static';
               }
@@ -264,7 +299,7 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
               if (tile === this.selectedTile) {
                 this.drawTileWithColor(tile, color);
                 this.selectedTile = null;
-                this.selectedPixel = null;
+                // this.selectedPixel = null;
                 
                 // Réactiver l'effet de survol
                 tile.eventMode = 'static';
@@ -342,13 +377,28 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.minimapApp) return;
 
     const minimapLayer = new Container();
-    const tileSize = 2; // Small size for minimap tiles
+    const minimapWidth = 150;
+    const minimapHeight = 150;
+    const tileSize = Math.min(minimapWidth / this.WIDTH, minimapHeight / this.HEIGHT);
 
+    // Dessiner le fond de la minimap
+    const background = new Graphics();
+    background.beginFill(0x1a1a1a);
+    background.drawRect(0, 0, minimapWidth, minimapHeight);
+    background.endFill();
+    minimapLayer.addChild(background);
+
+    // Dessiner la zone de contenu
+    const contentArea = new Graphics();
+    contentArea.beginFill(0x2c2e31);
+    contentArea.drawRect(0, 0, this.WIDTH * tileSize, this.HEIGHT * tileSize);
+    contentArea.endFill();
+    minimapLayer.addChild(contentArea);
+
+    // Créer les tuiles
     for (let x = 0; x < this.WIDTH; x++) {
       for (let y = 0; y < this.HEIGHT; y++) {
         const tile = new Graphics();
-        
-        // Alterner entre gris et noir pour créer un motif en damier
         const isEvenX = x % 2 === 0;
         const isEvenY = y % 2 === 0;
         const color = (isEvenX && isEvenY) || (!isEvenX && !isEvenY) ? 0x333333 : 0x222222;
@@ -363,9 +413,9 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    // Center the minimap
-    minimapLayer.x = (200 - this.WIDTH * tileSize) / 2;
-    minimapLayer.y = (200 - this.HEIGHT * tileSize) / 2;
+    // Centrer le contenu dans la minimap
+    minimapLayer.x = (minimapWidth - this.WIDTH * tileSize) / 2;
+    minimapLayer.y = (minimapHeight - this.HEIGHT * tileSize) / 2;
     
     this.minimapApp.stage.addChild(minimapLayer);
   }
@@ -390,30 +440,33 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
         return;
       }
 
+      const minimapWidth = 150;
+      const minimapHeight = 150;
       const worldWidth = this.WIDTH * this.BASE_PIXEL_SIZE;
       const worldHeight = this.HEIGHT * this.BASE_PIXEL_SIZE;
       
-      // Calculate visible area
-      const visibleWidth = this.container.nativeElement.clientWidth / (this.currentScale * this.BASE_PIXEL_SIZE);
-      const visibleHeight = this.container.nativeElement.clientHeight / (this.currentScale * this.BASE_PIXEL_SIZE);
+      // Calculer l'échelle de la minimap
+      const tileSize = Math.min(minimapWidth / this.WIDTH, minimapHeight / this.HEIGHT);
+      const minimapScale = tileSize / this.BASE_PIXEL_SIZE;
       
-      // Calculate viewport position in world coordinates
-      const worldX = -this.viewport.x / (this.currentScale * this.BASE_PIXEL_SIZE);
-      const worldY = -this.viewport.y / (this.currentScale * this.BASE_PIXEL_SIZE);
+      // Calculer la position du viewport dans les coordonnées de la minimap
+      const viewportX = -this.viewport.x * minimapScale;
+      const viewportY = -this.viewport.y * minimapScale;
       
-      // Convert to minimap coordinates
-      const minimapScale = 200 / (this.WIDTH * 2); // 2 is the minimap tile size
-      const minimapX = (worldX * minimapScale) + (200 - this.WIDTH * 2) / 2;
-      const minimapY = (worldY * minimapScale) + (200 - this.HEIGHT * 2) / 2;
-      const minimapWidth = visibleWidth * minimapScale;
-      const minimapHeight = visibleHeight * minimapScale;
+      // Calculer la taille visible du viewport dans la minimap
+      const viewportWidth = (this.container.nativeElement.clientWidth / this.currentScale) * minimapScale;
+      const viewportHeight = (this.container.nativeElement.clientHeight / this.currentScale) * minimapScale;
 
-      // Update viewport indicator
+      // Ajuster la position pour centrer le contenu
+      const offsetX = (minimapWidth - this.WIDTH * tileSize) / 2;
+      const offsetY = (minimapHeight - this.HEIGHT * tileSize) / 2;
+
+      // Mettre à jour l'indicateur du viewport
       Object.assign(this.minimapViewport.style, {
-        left: `${minimapX}px`,
-        top: `${minimapY}px`,
-        width: `${minimapWidth}px`,
-        height: `${minimapHeight}px`
+        left: `${viewportX + offsetX}px`,
+        top: `${viewportY + offsetY}px`,
+        width: `${viewportWidth}px`,
+        height: `${viewportHeight}px`
       });
     } catch (error) {
       console.error('Error in updateMinimapViewport:', error);
@@ -519,16 +572,94 @@ export class MapDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  // Remplacer les méthodes de gestion des événements tactiles
+  private initialDistance: number = 0;
+  private initialScale: number = 1;
+  private isPinching: boolean = false;
+
+  private handleTouchStart(event: any) {
+    if (event.touches && event.touches.length === 2) {
+      this.isPinching = true;
+      const touch1 = event.touches[0];
+      const touch2 = event.touches[1];
+      
+      // Calculer la distance initiale entre les deux doigts
+      this.initialDistance = Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) +
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+      );
+      
+      // Sauvegarder l'échelle actuelle
+      this.initialScale = this.viewport?.scale.x || 1;
+      
+      console.log('Touch start with 2 fingers', this.initialDistance, this.initialScale);
+    }
+  }
+
+  private handleTouchMove(event: any) {
+    if (this.isPinching && event.touches && event.touches.length === 2) {
+      const touch1 = event.touches[0];
+      const touch2 = event.touches[1];
+      
+      // Calculer la nouvelle distance entre les deux doigts
+      const currentDistance = Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) +
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+      );
+      
+      // Calculer le facteur de zoom basé sur le changement de distance
+      const scaleFactor = currentDistance / this.initialDistance;
+      
+      // Appliquer le zoom
+      if (this.viewport) {
+        const newScale = this.initialScale * scaleFactor;
+        
+        // Limiter l'échelle aux valeurs min/max
+        const clampedScale = Math.max(this.MIN_SCALE, Math.min(this.MAX_SCALE, newScale));
+        
+        // Appliquer l'échelle au viewport
+        this.viewport.scale.set(clampedScale);
+        
+        // Mettre à jour l'échelle actuelle
+        this.currentScale = clampedScale;
+        
+        console.log('Touch move with 2 fingers', currentDistance, scaleFactor, clampedScale);
+      }
+    }
+  }
+
+  private handleTouchEnd(event: any) {
+    this.isPinching = false;
+    console.log('Touch end');
+  }
+
+  // Supprimer les anciennes méthodes de gestion des événements pointer
+  private handlePointerDown(event: any) {
+    // Ne rien faire ici, nous utilisons les événements touch à la place
+  }
+
+  private handlePointerMove(event: any) {
+    // Ne rien faire ici, nous utilisons les événements touch à la place
+  }
+
+  private handlePointerUp(event: any) {
+    // Ne rien faire ici, nous utilisons les événements touch à la place
+  }
+
   // Zoom control methods
   public zoomIn() {
     if (this.viewport) {
       this.viewport.zoom(1 + this.ZOOM_STEP);
+      this.currentScale = this.viewport.scale.x;
+      this.updateMinimapViewport();
     }
   }
 
   public zoomOut() {
     if (this.viewport) {
       this.viewport.zoom(1 - this.ZOOM_STEP);
+      this.currentScale = this.viewport.scale.x;
+      this.updateMinimapViewport();
     }
   }
 }

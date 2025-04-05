@@ -6,9 +6,9 @@ import io
 import base64
 from PIL import Image
 
-from app.api.deps import get_db
-from app.ai.pixelart.image_processing import image_to_np
-from app.schemas.stakeifys.project import ProjectCreate
+from src.api.deps import get_db
+from src.ai.image.image_processing import image_to_np
+from src.models.pixamut.project.project_crud import ProjectCreate
 
 router = APIRouter()
 

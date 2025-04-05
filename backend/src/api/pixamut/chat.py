@@ -9,15 +9,17 @@ from typing import List, Dict
 # from openai.types.chat import ChatCompletionMessageParam
 # import openai
 
-from app.api.deps import get_db
-from app.schemas.chat import ChatRequest, ChatMessage
-from app.core.config import config
-from app.ai.agents.intent_agent import intent_agent
-from app.ai.agents.commentator_agent import commentator_agent
-from app.crud.stakeifys.crud_projects import PROJECTS
-from app.crud.stakeifys.crud_projects_snapshot import PROJECT_SNAPSHOTS
-from app.models.stakeifys.project import ProjectModel
-from app.models.stakeifys.project_snapshot import ProjectSnapshotModel
+from src.api.deps import get_db
+from src.models.pixamut.chat_schema import ChatRequest, ChatMessage
+from src.core.config import config
+
+# from src.ai.agents.intent_agent import intent_agent
+# from app.ai.agents.commentator_agent import commentator_agent
+from src.models.pixamut.project.project_crud import PROJECTS, ProjectModel
+from src.models.pixamut.project_snapshot.project_snapshot_crud import (
+    PROJECT_SNAPSHOTS,
+    ProjectSnapshotModel,
+)
 
 # openai.api_key = config.OPENAI_KEY
 
@@ -30,10 +32,11 @@ async def chat_endpoint(chat: ChatRequest):
         {"role": msg.role, "content": msg.content} for msg in chat.messages
     ]
     try:
-        response = intent_agent.prompt_llm_with_messages(messages=chat_messages)
+        # response = intent_agent.prompt_llm_with_messages(messages=chat_messages)
         # response = openai.chat.completions.create(
         #     model="gpt-3.5-turbo", messages=chat_messages, stream=False  # type: ignore
         # )
+        response = "hello"
     except Exception as e:
         print("error")
         print(e, flush=True)

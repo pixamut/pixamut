@@ -3,8 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends
 
 from src.api.deps import get_db
-from app.crud.stakeifys.crud_projects import PROJECTS
-from app.schemas.stakeifys.project import Project, ProjectMetadata
+from src.models.pixamut.project.project_crud import PROJECTS, Project, ProjectMetadata
 
 router = APIRouter()
 

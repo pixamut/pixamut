@@ -4,7 +4,7 @@ from sqlalchemy.future import select
 
 from src.models.base.base_crud import CRUDBase
 from .project_model import ProjectModel
-from .project_schema import ProjectCreate, ProjectUpdate
+from .project_schema import ProjectCreate, ProjectUpdate, Project, ProjectMetadata
 
 
 class CRUDProjects(CRUDBase[ProjectModel, ProjectCreate, ProjectUpdate]):

@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 
 from src.models.base.base_crud import CRUDBase
 from .pixel_event_model import PixelEventModel
-from .pixel_event_schema import PixelEventCreate, PixelEventUpdate
+from .pixel_event_schema import PixelEventCreate, PixelEventUpdate, PixelEventInDB
 
 
 class CRUDPixels(CRUDBase[PixelEventModel, PixelEventCreate, PixelEventUpdate]):

@@ -2,9 +2,8 @@ from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends
 
-from app.api.deps import get_db
-from app.schemas.stakeifys.pixel import PixelInDB
-from app.crud.stakeifys.crud_pixels import PIXELS
+from src.api.deps import get_db
+from src.models.pixamut.pixel.pixel_crud import PIXELS, PixelInDB
 
 router = APIRouter()
 

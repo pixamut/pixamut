@@ -3,7 +3,7 @@ from sqlalchemy import delete, update, func
 
 from src.models.base.base_crud import CRUDBase
 from .action_model import ActionModel
-from .action_schema import ActionCreate, ActionUpdate
+from .action_schema import ActionCreate, ActionUpdate, ActionCall, ActionMethod
 
 
 class CRUDActions(CRUDBase[ActionModel, ActionCreate, ActionUpdate]):

@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 import bcrypt
 from jose import JWTError, jwt
 
-from app.schemas.token import TokenPayload
+from src.models.token_schema import TokenPayload
 
 from .config import config
 
@@ -12,7 +12,7 @@ ALGORITHM = "HS256"
 
 
 def create_access_token(
-    subject: int, expires_delta: timedelta | None = None
+    subject: str, expires_delta: timedelta | None = None
 ) -> Tuple[str, datetime]:
     if expires_delta:
         expire = datetime.now(tz=UTC) + expires_delta
@@ -25,7 +25,7 @@ def create_access_token(
     return encoded_jwt, expire
 
 
-def create_refresh_token(subject: int, expires_delta: timedelta | None = None) -> str:
+def create_refresh_token(subject: str, expires_delta: timedelta | None = None) -> str:
     if expires_delta:
         expire = datetime.now(tz=UTC) + expires_delta
     else:

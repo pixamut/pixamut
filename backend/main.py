@@ -7,16 +7,16 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import RedirectResponse
 
-from app.core.config import config
-from app.api import v1_api_router
-from app.contracts.pixel_listeners import listen_to_pixels_events_loop
-from app.contracts.project_factory_listeners import (
+from src.core.config import config
+from src.api import api_router
+from src.contracts.pixel_listeners import listen_to_pixels_events_loop
+from src.contracts.project_factory_listeners import (
     listen_to_project_factory_events_loop,
 )
-from app.contracts.project_listeners import project_execution_loop
-from app.ai.placement.init import init_grid_arrays
-from app.contracts.provider import provider_connect
-from app.ai.agents.intent_agent import intent_agent
+from src.contracts.project_listeners import project_execution_loop
+from src.ai.placement.init import init_grid_arrays
+from src.contracts.provider import provider_connect
+
 
 app = FastAPI()
 
@@ -30,7 +30,7 @@ if config.CORS_ORIGINS:
     )
 
 
-app.include_router(v1_api_router, prefix=config.API_PREFIX)
+app.include_router(api_router, prefix=config.API_PREFIX)
 
 
 @app.on_event("startup")

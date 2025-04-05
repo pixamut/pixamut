@@ -4,7 +4,7 @@ from sqlalchemy import func
 
 from src.models.base.base_crud import CRUDBase
 from .pixel_model import PixelModel
-from .pixel_schema import PixelCreate, PixelUpdate
+from .pixel_schema import PixelCreate, PixelUpdate, PixelBase, PixelInDB
 
 
 class CRUDPixels(CRUDBase[PixelModel, PixelCreate, PixelUpdate]):

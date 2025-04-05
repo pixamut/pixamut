@@ -1,0 +1,35 @@
+.chat-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-right: 66px;
+    .chat-content {
+        flex: 1;
+        overflow-y: scroll;
+        padding: 16px;
+        .chat-message {
+            width: 100;
+            padding: 8px 16px;
+            display: flex;
+            &.user {
+                background-color: var(--background-color-light);
+                margin-left: 20%;
+            }
+            &.assistant {
+                margin-right: 20%;
+            }
+        }
+    }
+    .chat-input {
+        background-color: var(--background-color-light);
+        display: flex;
+        margin: 0px 10%;
+        ion-textarea {
+            margin: 0px 8px;
+            flex: 1;
+        }
+        ion-button {
+            width: 50px;
+        }
+    }
+}

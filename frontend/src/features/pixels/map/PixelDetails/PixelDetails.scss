@@ -1,0 +1,168 @@
+.pixel-details-container {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+
+    .pixel-details-center-container {
+        --width: 300px;
+        --height: 200px;
+        position: absolute;
+        bottom: 4px;
+        left: calc(50% - var(--width) / 2);
+        height: var(--height);
+        width: var(--width);
+
+        .pixel-details-header {
+            padding: 8px;
+            height: 50px;
+            background-color: var(--background-color-light);
+            border: 2px solid var(--background-color-dark);
+            display: flex;
+            align-items: center;
+            .pixel {
+                width: 30px;
+                height: 30px;
+                background-color: var(--color);
+                border: 2px solid var(--ion-color-primary);
+            }
+            .name {
+                text-align: center;
+                color: var(--sub-color);
+                span {
+                    color: var(--text-color);
+                }
+                flex: 1;
+            }
+            .coords {
+                color: var(--sub-color);
+            }
+        }
+        .pixel-details-content {
+            --content-height: 150px;
+            height: var(--content-height);
+            display: flex;
+
+            .left-button,
+            .right-button {
+                ion-button {
+                    position: relative;
+                    z-index: 10;
+                    --color: var(--ion-color-primary);
+                    --background: var(--background-color-dark);
+                    --box-shadow: none;
+                    margin: 0px;
+                    width: 10px;
+                    min-width: 0px;
+                    min-height: 0px;
+                    height: 100%;
+                    &::part(native) {
+                        width: 10px;
+                        border-radius: 0px;
+                    }
+                }
+            }
+            .left-button {
+            }
+            .right-button {
+            }
+
+            .content-slide {
+                background-color: var(--background-color-light);
+                border: 2px solid var(--background-color-dark);
+                padding: 8px;
+                padding-top: 0px;
+                width: calc(var(--width) - 20px);
+                height: var(--content-height);
+                display: flex;
+                flex-direction: column;
+                .section {
+                    flex: 1;
+                    font-size: 1rem;
+                    display: flex;
+                    flex-direction: column;
+                    &.history {
+                        margin-top: 8px;
+                    }
+                    .title {
+                        text-align: center;
+                        margin-bottom: 8px;
+                        color: var(--sub-color);
+                    }
+                    .content {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        color: var(--text-color);
+                        .color-blocks {
+                            display: flex;
+                            justify-content: space-between;
+                            ion-button {
+                                min-height: 0px;
+                                height: 25px;
+                                --padding-top: 2px;
+                                --padding-bottom: 2px;
+                            }
+                            .color-block {
+                                width: 15px;
+                                height: 15px;
+                                background-color: black;
+                                opacity: 0.7;
+                            }
+                        }
+                        .info {
+                            padding: 2px;
+                            display: flex;
+                            .info-title {
+                                flex: 1;
+                                color: var(--text-color);
+                                .title-value {
+                                    flex: 1;
+                                }
+                            }
+                            .info-value {
+                                flex: 2;
+                                color: var(--ion-color-primary);
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                .unit {
+                                    margin-left: 4px;
+                                }
+                                .additional-info {
+                                    margin-left: 4px;
+                                    color: var(--sub-color);
+                                }
+                            }
+                        }
+                    }
+                }
+                &.center {
+                    position: relative;
+                    z-index: 3;
+                }
+
+                &.left {
+                    position: absolute;
+                    top: 50px;
+                    transition: left 0.5s ease;
+                    left: 0px;
+                    z-index: 2;
+                    &.open {
+                        left: calc(-1 * var(--width) + 20px);
+                    }
+                }
+                &.right {
+                    position: absolute;
+                    top: 50px;
+                    transition: right 0.5s ease;
+                    right: 0px;
+                    z-index: 1;
+                    &.open {
+                        right: calc(-1 * var(--width) + 20px);
+                    }
+                }
+            }
+        }
+    }
+}

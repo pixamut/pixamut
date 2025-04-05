@@ -1,4 +1,5 @@
 .DS_Store
 .env
 
-/app/
+/app
+/frontend_angular

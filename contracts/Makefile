@@ -74,3 +74,29 @@ stake: ## Call stakePixel method on the PixelStaking contract. Usage: make stake
 # mint: ## Call mint(address to, uint256 amount) on your contract. Usage: make mint to=<recipient_address> amount=<value>
 # 	@echo "Minting tokens to $(to) with amount $(amount) on contract $(STAKING_TOKEN_ADDRESS)..."
 # 	@cast send $(STAKING_TOKEN_ADDRESS) "mint(address,uint256)" $(to) $(amount) --private-key $(PRIVATE_KEY) --rpc-url $(RPC_URL)
+
+
+verify: ## Verify the PixelStaking contract on Bahamut testnet using Blockscout. Usage: make verify
+	@echo "Verifying Token contract at $(STAKING_TOKEN_ADDRESS)..."
+	@forge verify-contract \
+		--rpc-url $(RPC_URL) \
+		--verifier blockscout \
+		--verifier-url 'https://bck.ftnscan.com/api/' \
+		$(STAKING_TOKEN_ADDRESS) \
+		src/PXMTToken.sol:Token
+
+	# @echo "Verifying PixelStaking contract at $(PIXEL_STAKING_ADDRESS)..."
+	# @forge verify-contract \
+	# 	--rpc-url $(RPC_URL) \
+	# 	--verifier blockscout \
+	# 	--verifier-url 'https://bck.ftnscan.com/api/' \
+	# 	$(PIXEL_STAKING_ADDRESS) \
+	# 	src/PixelStaking.sol:PixelStaking
+
+	# @echo "Verifying ProjectFactory contract at $(PIXEL_STAKING_ADDRESS)..."
+	# @forge verify-contract \
+	# 	--rpc-url $(RPC_URL) \
+	# 	--verifier blockscout \
+	# 	--verifier-url 'https://bck.ftnscan.com/api/' \
+	# 	$(PIXEL_STAKING_ADDRESS) \
+	# 	src/PixelStaking.sol:PixelStaking

@@ -11,7 +11,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from datetime import datetime
 
-from app.models.base import Base
+from src.models.base.base_model import Base
 
 
 class ProjectEventModel(Base):

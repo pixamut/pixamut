@@ -8,9 +8,9 @@ from sqlalchemy.future import select
 from src.core.security import get_password_hash, verify_password
 from .user_model import UserModel
 from .user_schema import UserCreate, UserUpdate
-from src.models.stakeifys.init import init_stakeifys_for_user
+from src.models.pixamut.init import init_pixamut_for_user
 
-from src.models.base_crud import CRUDBase
+from src.models.base.base_crud import CRUDBase
 
 
 def is_default_username(username: str) -> bool:
@@ -78,7 +78,7 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate]):
         db: AsyncSession,
         *,
         db_obj: UserModel,
-        obj_in: UserUpdate | dict[str, Any],
+        obj_in: UserUpdate | dict[str, Any] | UserCreate,
     ) -> UserModel:
         if isinstance(obj_in, dict):
             update_data = obj_in
@@ -158,9 +158,9 @@ class CRUDUser(CRUDBase[UserModel, UserCreate, UserUpdate]):
     async def init_user_for_project_if_needed(
         self, db: AsyncSession, user: UserModel, project: str
     ):
-        if project == "stakeifys" and user.joined_stakeifys_at is None:
-            user.joined_stakeifys_at = datetime.utcnow()
-            await init_stakeifys_for_user(db, user.tech_id)
+        if project == "stakeifys" and user.joined_pixamut_at is None:
+            user.joined_pixamut_at = datetime.utcnow()
+            await init_pixamut_for_user(db, user.tech_id)
             db.add(user)
             await db.commit()
 

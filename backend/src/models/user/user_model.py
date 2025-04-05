@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
 
 
-from src.models.base_model import BaseWithTechId
+from src.models.base.base_model import BaseWithTechId
 
 
 class UserModel(BaseWithTechId):
@@ -34,6 +34,6 @@ class UserModel(BaseWithTechId):
         String(length=255), nullable=True, unique=True, index=True
     )
 
-    joined_at: Mapped[datetime | None] = mapped_column(
+    joined_pixamut_at: Mapped[datetime | None] = mapped_column(
         TIMESTAMP(timezone=False), index=True, nullable=True
     )

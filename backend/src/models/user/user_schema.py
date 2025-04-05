@@ -9,7 +9,7 @@ class UserOAuth(BaseModel):
     google_id: str | None = None
     github_id: str | None = None
     wallet: str | None = None
-    joined_stakeifys_at: datetime | None = None
+    joined_pixamut_at: datetime | None = None
 
 
 class UserBase(UserOAuth):

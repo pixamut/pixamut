@@ -34,7 +34,7 @@ pixel_staking_contract = provider.eth.contract(
     abi=PIXEL_STAKING_ABI,
 )
 token_contract = provider.eth.contract(
-    address=Web3.to_checksum_address(config.IFYS_TOKEN_ADDRESS), abi=TOKEN_ABI
+    address=Web3.to_checksum_address(config.TOKEN_ADDRESS), abi=TOKEN_ABI
 )
 factory_contract = provider.eth.contract(
     address=Web3.to_checksum_address(config.PROJECT_FACTORY_ADDRESS),

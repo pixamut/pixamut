@@ -98,7 +98,7 @@ class Settings(BaseSettings):
             and info.data.get("EMAIL_FROM_EMAIL")
         )
 
-    IFYS_TOKEN_ADDRESS: str = ""
+    TOKEN_ADDRESS: str = ""
     PIXEL_STAKING_ADDRESS: str = ""
     PROJECT_FACTORY_ADDRESS: str = ""
 

@@ -7,7 +7,7 @@ endif
 
 CONTRACTS_DIR = ./out
 CONTRACTS = PixelStaking PXMTToken Project ProjectFactory
-FRONTEND_ABI_DIR = ../frontend/src/app/abis
+FRONTEND_ABI_DIR = ../frontend/src/abis
 BACKEND_ABI_DIR = ../backend/src/contracts/abis
 
 .DEFAULT_GOAL := help

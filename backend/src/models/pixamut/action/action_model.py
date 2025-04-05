@@ -11,8 +11,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.models.base import Base
-from app.schemas.stakeifys.action import ActionCall
+from src.models.base.base_model import Base
 
 
 class ActionModel(Base):

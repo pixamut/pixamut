@@ -1,7 +1,7 @@
 from sqlalchemy import PrimaryKeyConstraint, String, Integer, BigInteger, text, Numeric
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.models.base import Base
+from src.models.base.base_crud import Base
 
 
 class PixelModel(Base):

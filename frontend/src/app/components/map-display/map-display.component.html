@@ -1,0 +1,105 @@
+<div class="map-container">
+  <div #container class="canvas-container"></div>
+
+  <!-- Zoom Controls -->
+  <div class="zoom-controls">
+    <button (click)="zoomIn()" class="zoom-btn">
+      <ion-icon name="add-outline"></ion-icon>
+    </button>
+    <button (click)="zoomOut()" class="zoom-btn">
+      <ion-icon name="remove-outline"></ion-icon>
+    </button>
+  </div>
+
+  <!-- Minimap -->
+  <div class="minimap-container">
+    <div #minimap class="minimap"></div>
+    <div class="minimap-viewport"></div>
+  </div>
+</div>
+
+<ion-modal #modal trigger="open-modal" [isOpen]="isModalOpen" [initialBreakpoint]="1" [backdropDismiss]="false"
+  [backdropBreakpoint]="1">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Pixel#{{selectedPixel?.y}}{{selectedPixel?.x}}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isModalOpen = false">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-segment-view>
+        <ion-segment-content id="first">
+          <ion-item>
+            <ion-label>
+              Owner
+            </ion-label>
+            <ion-note slot="end">0x000.0000</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Stacked
+            </ion-label>
+            <ion-note slot="end">0.00 PXMT</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Share
+            </ion-label>
+            <ion-note slot="end">0 %</ion-note>
+          </ion-item>
+        </ion-segment-content>
+        <ion-segment-content id="second">
+          <ion-list-header>
+            <ion-label>
+              Owner
+            </ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>
+              Tx Hash
+            </ion-label>
+            <ion-note slot="end">0x000.0000</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              Controls
+            </ion-label>
+            <ion-note slot="end">10000px (100%)</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              History
+            </ion-label>
+            <ion-note slot="end">
+              <ion-badge color="danger">&nbsp;</ion-badge>
+              <ion-badge color="warning">&nbsp;</ion-badge>
+              <ion-badge color="success">&nbsp;</ion-badge>
+            </ion-note>
+          </ion-item>
+        </ion-segment-content>
+        <ion-segment-content id="third">
+
+          <ion-list-header>
+            <ion-label>
+              Activity
+            </ion-label>
+          </ion-list-header>
+        </ion-segment-content>
+      </ion-segment-view>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+
+      <ion-button expand="block">
+        <ion-label>Stake</ion-label>
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>

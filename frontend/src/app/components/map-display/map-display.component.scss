@@ -1,0 +1,102 @@
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+.zoom-controls {
+  position: fixed;
+  top: 65px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.zoom-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 72%);
+  border: 1px solid rgb(116 116 116 / 88%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.minimap-container {
+  position: fixed;
+  top: 65px;
+  left: 20px;
+  width: 200px;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.minimap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.minimap-viewport {
+  position: absolute;
+  border: 2px solid rgba(255, 0, 0, 0.8);
+  background: rgba(255, 0, 0, 0.1);
+  pointer-events: none;
+}
+ion-segment-view {
+  height: 150px;
+}
+
+ion-segment-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+}
+ion-segment-content:nth-of-type(1) {
+}
+ion-segment-content:nth-of-type(2) {
+}
+ion-segment-content:nth-of-type(3) {
+}
+
+ion-modal {
+
+  z-index: 20002;
+  height: 260px;
+  bottom: 0px;
+  position: fixed;
+  top: auto;
+
+  ion-list-header {
+    margin-top : 0px;
+  }
+}

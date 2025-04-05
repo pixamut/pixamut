@@ -1,0 +1,49 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "${BACKEND_PORT}:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    command: >
+      sh -c "uvicorn main:app --host 0.0.0.0 --port 8000 --reload --workers 1"
+    networks:
+      - pixamut_network
+
+  db:
+    image: postgres:16
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - pixamut_network
+
+  pixamut:
+    build:
+      context: ./frontend
+    command: yarn start
+    ports:
+      - "${PIXAMUT_FRONT_PORT}:5173"
+    volumes:
+      - ./frontend:/frontend
+      - /fronend/node_modules # prevent container from re-installing
+    env_file:
+      - .env
+
+networks:
+  pixamut_network:
+    driver: bridge
+
+volumes:
+  data:

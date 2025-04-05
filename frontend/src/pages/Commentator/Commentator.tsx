@@ -7,13 +7,11 @@ import "./Commentator.scss";
 import CommentatorComponent from "$features/chat/CommentatorComponent/CommentatorComponent";
 const CommentatorPage: React.FC = () => {
   return (
-    <IonPage>
-      <IonContent>
-        <div className="page-main-container commentator-main-container">
-          <CommentatorComponent />
-        </div>
-      </IonContent>
-    </IonPage>
+    <IonContent>
+      <div className="page-main-container commentator-main-container">
+        <CommentatorComponent />
+      </div>
+    </IonContent>
   );
 };
 

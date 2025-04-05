@@ -84,6 +84,12 @@ const PixelDisplay: React.FC<Props> = ({ id, layer }) => {
       dispatch(setSelectedPixel(pixelRef.current.id));
     });
 
+
+    px.on("touchstart", (e) => {
+      e.stopPropagation();
+      dispatch(setSelectedPixel(pixelRef.current.id));
+    });
+
     px.on("pointerover", () => {
       drawPx(
         px,

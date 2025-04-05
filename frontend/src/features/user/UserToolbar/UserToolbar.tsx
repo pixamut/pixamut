@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "$store/hooks";
+import { useAppDispatch, useAppSelector, usePlatform } from "$store/hooks";
 import {
   IonButton,
   IonIcon,
@@ -29,9 +29,11 @@ import {
 } from "wagmi";
 import { shortenAddress } from "$features/shared/utils";
 import { foundry } from "viem/chains";
+
 type Props = {};
 
 const UserToolbar: React.FC<Props> = ({}) => {
+  const { isDesktop } = usePlatform();
   const dispatch = useAppDispatch();
   const history = useHistory();
   const username = useAppSelector((state) => state.user.username);
@@ -112,7 +114,7 @@ const UserToolbar: React.FC<Props> = ({}) => {
               <IonLabel>login/signup</IonLabel>
             </IonItem>
           )}
-          {!isConnected && (
+          {!isConnected && isDesktop && (
             <IonItem button onClick={handleConnectWallet} lines="none">
               <IonIcon slot="start" icon={walletSharp} />
               <IonLabel>connect wallet</IonLabel>

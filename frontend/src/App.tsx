@@ -54,12 +54,11 @@ const App: React.FC = () => (
           <div id="toolbar">
             <div className="logo hide-md">
               <div id="logo-text">
-                Stake.<span>ifys</span>
+                <span>Pixamut</span>
               </div>
             </div>
           </div>
           <IonButtons slot="end">
-            <MintButton />
             <UserToolbar />
           </IonButtons>
         </IonToolbar>

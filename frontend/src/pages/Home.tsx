@@ -34,7 +34,7 @@ import { fetchProjects } from "$features/projects/project.slice";
 
 import "./Home.scss";
 import EndMenu from "$features/shared/EndMenu/EndMenu";
-import SmallEndMenu from "$features/shared/EndMenu/SmallEndMenu";
+// import SmallEndMenu from "$features/shared/EndMenu/SmallEndMenu";
 import { MenuProvider } from "$features/shared/EndMenu/useMenuContext";
 
 const contentId = "main-content";
@@ -52,43 +52,41 @@ const Home: React.FC = () => {
     <MenuProvider>
       <IonSplitPane contentId={contentId} when="xl">
         <EndMenu contentId={contentId} menuId={menuId} />
-        <IonPage id={contentId}>
-          <IonContent fullscreen>
-            <SmallEndMenu menuId={menuId} contentId={contentId} />
-            <IonTabs>
-              <IonRouterOutlet>
-                {/*@ts-ignore*/}
-                <Redirect exact path="/" to="/map" />
-                {/*@ts-ignore*/}
-                <Route path="/map" component={MapPage} />
-                {/*@ts-ignore*/}
-                <Route path="/projects" component={ProjectsPage} />
-                {/*@ts-ignore*/}
-                <Route path="/commentator" component={CommentatorPage} />
-              </IonRouterOutlet>
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="map" href="/map">
-                  <IonIcon icon={mapSharp} />
-                  <IonLabel>map</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="projects" href="/projects">
-                  <IonIcon icon={mapSharp} />
-                  <IonLabel>ai projects</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="commentator" href="/commentator">
-                  <IonIcon icon={accessibilitySharp} />
-                  <IonLabel>ai commentator</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-            <ToastContainer
-              position="bottom-center"
-              autoClose={5000}
-              theme="dark"
-            />
-            <WatchEvents />
-          </IonContent>
-        </IonPage>
+        <IonContent fullscreen id={contentId}>
+          {/* <SmallEndMenu menuId={menuId} contentId={contentId} /> */}
+          <IonTabs>
+            <IonRouterOutlet>
+              {/*@ts-ignore*/}
+              <Redirect exact path="/" to="/map" />
+              {/*@ts-ignore*/}
+              <Route path="/map" component={MapPage} />
+              {/*@ts-ignore*/}
+              <Route path="/projects" component={ProjectsPage} />
+              {/*@ts-ignore*/}
+              <Route path="/commentator" component={CommentatorPage} />
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="map" href="/map">
+                <IonIcon icon={mapSharp} />
+                <IonLabel>map</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="projects" href="/projects">
+                <IonIcon icon={mapSharp} />
+                <IonLabel>ai projects</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="commentator" href="/commentator">
+                <IonIcon icon={accessibilitySharp} />
+                <IonLabel>ai commentator</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            theme="dark"
+          />
+          <WatchEvents />
+        </IonContent>
       </IonSplitPane>
     </MenuProvider>
   );

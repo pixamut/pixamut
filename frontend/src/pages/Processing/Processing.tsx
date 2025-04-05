@@ -5,13 +5,11 @@ import "./Processing.scss";
 import ImageProcessing from "$features/projects/ImageProcessing/ImageProcessing";
 const ProcessingPage: React.FC = () => {
   return (
-    <IonPage>
-      <IonContent>
-        <div className="processing-main-container">
-          <ImageProcessing />
-        </div>
-      </IonContent>
-    </IonPage>
+    <IonContent>
+      <div className="processing-main-container">
+        <ImageProcessing />
+      </div>
+    </IonContent>
   );
 };
 

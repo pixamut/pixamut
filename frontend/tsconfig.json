@@ -21,7 +21,9 @@
       "$api/*": ["./src/api/*"],
       "$components/*": ["./src/components/*"],
       "$features/*": ["./src/features/*"],
-      "$abis/*": ["./src/abis/*"]
+      "$abis/*": ["./src/abis/*"],
+      "$hooks/*": ["./src/hooks/*"],
+      "$utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src"],

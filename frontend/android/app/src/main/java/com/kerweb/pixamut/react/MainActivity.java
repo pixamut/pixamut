@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.kerweb.pixamut.react;
 
 import com.getcapacitor.BridgeActivity;
 

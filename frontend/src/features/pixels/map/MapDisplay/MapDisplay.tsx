@@ -1,12 +1,12 @@
 import { memo, useEffect, useRef, useState } from "react";
-import { Application, Container, Graphics } from "pixi.js";
+import { Application, Container, Graphics, Point } from "pixi.js";
 import { Viewport } from "pixi-viewport";
 import "./MapDisplay.scss";
 import { BASE_PIXEL_SIZE } from "./utils";
 import PixelDisplay from "../PixelDisplay/PixelDisplay";
 import GridDisplay from "../GridDisplay/GridDisplay";
 import PixelDetails from "../PixelDetails/PixelDetails";
-import { useAppDispatch } from "$store/hooks";
+import { useAppDispatch, usePlatform } from "$store/hooks";
 import { HEIGHT, PIXEL_IDS, WIDTH } from "$features/pixels/pixels.utils";
 import { setSelectedPixel } from "$features/pixels/pixel.slice";
 
@@ -18,6 +18,7 @@ const MapDisplay: React.FC<Props> = () => {
   const viewportRef = useRef<Viewport | null>(null);
   const layerRef = useRef<Container | null>(null);
   const [isInit, setIsInit] = useState<boolean>(false);
+  const { isDesktop } = usePlatform();
 
   useEffect(() => {
     async function initApp() {
@@ -44,22 +45,51 @@ const MapDisplay: React.FC<Props> = () => {
         worldWidth,
         worldHeight,
         events: app.renderer.events,
+        disableOnContextMenu: true,
+        ticker: app.ticker,
+        noTicker: false,
       });
 
       viewport.eventMode = "static";
+      viewport.sortableChildren = true;
 
-      viewport
-        .drag()
-        .pinch({
-          percent: 1,
-          noDrag: false,
-          factor: 2,
-        })
-        .wheel()
-        .clampZoom({
-          minScale: 0.1,
-          maxScale: 10,
-        });
+      // Configure viewport based on platform
+      if (isDesktop) {
+        // Desktop configuration
+        viewport
+          .drag({
+            mouseButtons: "all",
+            wheel: false,
+          })
+          .wheel({
+            smooth: 10,
+            center: new Point(0, 0),
+          })
+          .clampZoom({
+            minScale: 0.1,
+            maxScale: 10,
+          });
+      } else {
+        // Mobile configuration
+        viewport
+          .drag({
+            mouseButtons: "all",
+            wheel: false,
+          })
+          .pinch({
+            percent: 0.5,
+            noDrag: false,
+            factor: 1.5,
+          })
+          .wheel({
+            smooth: 10,
+            center: new Point(0, 0),
+          })
+          .clampZoom({
+            minScale: 0.1,
+            maxScale: 10,
+          });
+      }
 
       // Adjust scale calculation to better handle mobile screens
       const widthScale = containerRef.current.clientWidth / worldWidth;
@@ -110,7 +140,7 @@ const MapDisplay: React.FC<Props> = () => {
         layerRef.current = null;
       }
     };
-  }, []);
+  }, [isDesktop]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>

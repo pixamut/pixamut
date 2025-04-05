@@ -7,13 +7,11 @@ import "./Map.scss";
 
 const MapPage: React.FC = () => {
   return (
-    <IonPage>
       <IonContent>
         <div className="page-main-container map-main-container">
           <MapDisplay />
-        </div>
-      </IonContent>
-    </IonPage>
+      </div>
+    </IonContent>
   );
 };
 

@@ -6,13 +6,11 @@ import ChatComponent from "$features/chat/ChatComponent/ChatComponent";
 import "./Projects.scss";
 const ProjectsPage: React.FC = () => {
   return (
-    <IonPage>
-      <IonContent>
-        <div className="page-main-container projects-main-container">
-          <ChatComponent />
-        </div>
-      </IonContent>
-    </IonPage>
+    <IonContent>
+      <div className="page-main-container projects-main-container">
+        <ChatComponent />
+      </div>
+    </IonContent>
   );
 };
 

@@ -37,7 +37,7 @@ const ProjectButton: React.FC<Props> = ({ projectAddress, amount }) => {
       ) : balance < amount ? (
         <>
           <IonIcon slot="start" icon={alertSharp} />
-          <IonLabel>not enough IFYS balance</IonLabel>
+          <IonLabel>not enough PXMT balance</IonLabel>
         </>
       ) : (
         <>

@@ -37,7 +37,7 @@ const StakeButton: React.FC<Props> = ({ pixelId, amount, color, balance }) => {
       ) : balance < amount ? (
         <>
           <IonIcon slot="start" icon={alertSharp} />
-          <IonLabel>not enough IFYS balance</IonLabel>
+          <IonLabel>not enough PXMT balance</IonLabel>
         </>
       ) : (
         <>

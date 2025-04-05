@@ -88,9 +88,6 @@ const UserToolbar: React.FC<Props> = ({}) => {
 
   return (
     <>
-      <IonButton fill="clear" className="user-toolbar">
-        <IonIcon slot="start" icon={notificationsSharp} />
-      </IonButton>
       <IonButton
         fill="clear"
         className="user-toolbar"
@@ -98,7 +95,7 @@ const UserToolbar: React.FC<Props> = ({}) => {
       >
         <IonIcon slot="start" icon={personSharp} />
         <IonLabel>
-          {username || shortenAddress(address) || "local user"}
+          {username || shortenAddress(address) || ""}
         </IonLabel>
       </IonButton>
       <IonPopover

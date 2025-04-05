@@ -32,14 +32,14 @@ const StakeModal: React.FC<Props> = ({ pixelId }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const pixel = useAppSelector((state) => selectPixelById(state, pixelId));
 
-  const [color, setColor] = useState<number>(pixel.color ?? 0x000000);
+  const [color, setColor] = useState<number>(pixel?.color ?? 0x000000);
   const [amount, setAmount] = useState<number>(0);
 
   const balance = useIFYSBalance();
 
   useEffect(() => {
-    setColor(pixel.color ?? 0x000000);
-    setAmount((pixel.stakeAmount ?? 0 )+ 0.000000000000000001);
+    setColor(pixel?.color ?? 0x000000);
+    setAmount((pixel?.stakeAmount ?? 0) + 0.000000000000000001);
   }, [pixel]);
 
   function closeModal() {
@@ -63,10 +63,10 @@ const StakeModal: React.FC<Props> = ({ pixelId }) => {
             <div className="modal-title">
               <div className="pixel-name">
                 pixel#
-                <span>{pixel.id}</span>
+                <span>{pixel?.id}</span>
               </div>
               <div className="pixel-coords">
-                ({pixel.x},{pixel.y})
+                ({pixel?.x},{pixel?.y})
               </div>
             </div>
           </IonTitle>
@@ -76,7 +76,7 @@ const StakeModal: React.FC<Props> = ({ pixelId }) => {
       <IonContent>
         <div className="stake-modal-container">
           <div className="current-pixel">
-            <ActivityChart pixelId={pixelId} isDetailed={true} />
+            {pixelId && <ActivityChart pixelId={pixelId} isDetailed={true} />}
           </div>
           <div className="stake-inputs">
             <div className="stake-input color">
@@ -110,7 +110,7 @@ const StakeModal: React.FC<Props> = ({ pixelId }) => {
                 id="stake-amount-input"
               >
                 <IonLabel>
-                  {amount} IFYS <span>({balance} IFYS)</span>
+                  {amount} PXMT <span>({balance} PXMT)</span>
                 </IonLabel>
               </IonButton>
               <StakeAmountPopover

@@ -133,7 +133,7 @@ const ProjectModal: React.FC<Props> = ({
                   id="project-amount-input"
                 >
                   <IonLabel>
-                    {amount} IFYS <span>({balance} IFYS)</span>
+                    {amount} PXMT <span>({balance} PXMT)</span>
                   </IonLabel>
                 </IonButton>
                 <StakeAmountPopover

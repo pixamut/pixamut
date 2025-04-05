@@ -1,0 +1,7 @@
+.venv*
+__pypackages__
+__pycache__
+.pdm-python
+*.egg-info
+
+static

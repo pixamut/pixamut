@@ -95,6 +95,9 @@ ion-modal {
   bottom: 0px;
   position: fixed;
   top: auto;
+  --height: 260px;
+  --max-height: 260px;
+  --min-height: 260px;
 
   ion-list-header {
     ion-label {

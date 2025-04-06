@@ -2,6 +2,7 @@ import numpy as np
 import asyncio
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from web3.types import TxParams
+from src.ai.image.image_processing import image_to_np
 from src.ai.utils import hash_address
 from src.ai.placement.placement_sliding import find_best_placement_full
 from src.ai.placement.placement_actions import generate_actions_for_placement
@@ -145,13 +146,14 @@ async def project_execution_loop():
                         print("not enough budget", budget_in_eth, flush=True)
                         continue
                     # 2 - find the best placement
-                    image_grid = np.frombuffer(
-                        project.image_grid, dtype=np.uint32
-                    ).reshape(project.image_h, project.image_w)
-                    image_mask = np.frombuffer(
-                        project.image_mask, dtype=np.bool_
-                    ).reshape(project.image_h, project.image_w)
-                    image_mask = image_mask.astype(bool)
+                    image_grid, image_mask = image_to_np(project.image)
+                    # image_grid = np.frombuffer(
+                    #     project.image_grid, dtype=np.uint32
+                    # ).reshape(project.image_h, project.image_w)
+                    # image_mask = np.frombuffer(
+                    #     project.image_mask, dtype=np.bool_
+                    # ).reshape(project.image_h, project.image_w)
+                    # image_mask = image_mask.astype(bool)
 
                     print("Mask shape", image_mask.shape, flush=True)
                     best_row, best_col, best_cost = find_best_placement_full(

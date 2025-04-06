@@ -70,10 +70,10 @@ const Home: React.FC = () => {
                 <IonIcon icon={mapSharp} />
                 <IonLabel>map</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="projects" href="/projects">
+              {/* <IonTabButton tab="projects" href="/projects">
                 <IonIcon icon={mapSharp} />
                 <IonLabel>ai projects</IonLabel>
-              </IonTabButton>
+              </IonTabButton> */}
               <IonTabButton tab="commentator" href="/commentator">
                 <IonIcon icon={accessibilitySharp} />
                 <IonLabel>ai commentator</IonLabel>

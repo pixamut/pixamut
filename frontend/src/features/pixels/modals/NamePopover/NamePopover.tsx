@@ -32,7 +32,8 @@ const NamePopover: React.FC<Props> = ({
     modal.current?.dismiss();
   }
   function confirmModal() {
-    onNameSet(String(inputRef.current?.value ?? ""));
+    console.log('confirmModal', {current: inputRef.current, value: inputRef.current?.value});
+    onNameSet(String(inputRef.current?.value as string ?? ""));
     closeModal();
   }
 

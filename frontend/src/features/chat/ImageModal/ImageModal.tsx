@@ -39,6 +39,7 @@ type Props = {
     width: number;
     height: number;
     imgSrc: string | undefined;
+    name: string;
   }) => void;
   isOpen: boolean;
 };
@@ -164,7 +165,7 @@ const ImageModal: React.FC<Props> = ({ isOpen, onDidDismiss }) => {
       ref={modal}
       className={`image-modal-page ${imgSrc ? "has-image" : ""}`}
       isOpen={isOpen}
-      onDidDismiss={() => onDidDismiss({ width, height, imgSrc })}
+      onDidDismiss={() => onDidDismiss({ width, height, imgSrc, name })}
     >
       <IonHeader>
         <IonToolbar>
@@ -174,7 +175,7 @@ const ImageModal: React.FC<Props> = ({ isOpen, onDidDismiss }) => {
             </IonButton>
           </IonButtons>
           <IonTitle>
-            <div className="modal-title">upload image</div>
+            <div className="modal-title">Create AI Campain</div>
           </IonTitle>
         </IonToolbar>
       </IonHeader>

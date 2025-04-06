@@ -42,7 +42,7 @@ export function useCreateProject({}: UseCreateProjectProps): UseCreateProjectRes
         ...CONTRACTS.ProjectFactory,
         functionName: "createProject",
         args: [title, imageURI],
-        value: parseEther("0.5"),
+        value: parseEther("0") //parseEther("0.5"),
       });
       const receipt = await waitForTransactionReceipt(client!, {
         hash: txResponse,

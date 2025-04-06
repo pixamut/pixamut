@@ -9,11 +9,16 @@ import PixelDetails from "../PixelDetails/PixelDetails";
 import { useAppDispatch, usePlatform } from "$store/hooks";
 import { HEIGHT, PIXEL_IDS, WIDTH } from "$features/pixels/pixels.utils";
 import { setSelectedPixel } from "$features/pixels/pixel.slice";
-import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
-import { image } from "ionicons/icons";
+import { IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonLabel, IonModal, IonTitle, IonToolbar } from "@ionic/react";
+import { closeSharp, image } from "ionicons/icons";
 import ImageModal from "$features/chat/ImageModal/ImageModal";
 import { ChatMessage } from "$features/chat/chat.interface";
 import { server } from "$api/server";
+import { useCreateProject } from "$features/shared/hooks/useCreateProject";
+import { useDepositIntoProject } from "$features/shared/hooks/useDepositIntoProject";
+import StakeAmountPopover from "$features/pixels/modals/StakeAmountPopover/StakeAmountPopover";
+import Tooltip from "$features/shared/Tooltip/Tooltip";
+import ProjectButton from "$features/projects/modals/ProjectModal/ProjectButton";
 
 type Props = {};
 const MapDisplay: React.FC<Props> = () => {
@@ -24,8 +29,12 @@ const MapDisplay: React.FC<Props> = () => {
   const layerRef = useRef<Container | null>(null);
   const [isInit, setIsInit] = useState<boolean>(false);
   const [loadingState, setLoadingState] = useState<string>("idle");
+  const [address, setAddress] = useState<string | null>();
   const { isDesktop } = usePlatform();
   const isMountedRef = useRef<boolean>(true);
+  const { create } = useCreateProject({});
+
+  const [fundsToDeposit, setFundsToDeposit] = useState<number>(0);
 
   // Cleanup function
   const cleanup = () => {
@@ -300,7 +309,7 @@ const MapDisplay: React.FC<Props> = () => {
   const [isAnswering, setIsAnswering] = useState(false);
 
   const [userInput, setUserInput] = useState("");
-  function onImageDismiss({
+  async function onImageDismiss({
     width,
     height,
     imgSrc,
@@ -309,14 +318,18 @@ const MapDisplay: React.FC<Props> = () => {
     width: number;
     height: number;
     imgSrc: string | undefined;
-    name: string;
+    name: string | undefined;
   }) {
-    console.log('onImageDismiss', imgSrc, width, height);
+    console.log('onImageDismiss', imgSrc, width, height, name);
     if (imgSrc) {
-      setUserInput(
-        `- **project title:** ${name}  \n![project](${imgSrc})  \n- **dimensions:** (${width}x${height})`,
-      );
-      sendMessage();
+      // setUserInput(
+      //   `- **project title:** ${name}  \n![project](${imgSrc})  \n- **dimensions:** (${width}x${height})`,
+      // );
+      // sendMessage();
+
+  const address = await create({ title: name || '', imageURI: imgSrc || '' });
+  setAddress(address);
+  console.log('address', address);
     }
     else {
 
@@ -342,9 +355,54 @@ const MapDisplay: React.FC<Props> = () => {
             </IonFabButton>
           </IonFab>
           <ImageModal isOpen={showModal} onDidDismiss={onImageDismiss} />
+          <IonModal className="deposit-modal" isOpen={!!address} onDidDismiss={() => setAddress(null)}>
+              <IonHeader>
+          <IonToolbar className="header-toolbar">
+            <IonTitle>
+              Deposit Funds
+            </IonTitle>
+            <IonButtons slot="end">
+              <IonButton onClick={() => setAddress(null)}>
+                <IonIcon icon={closeSharp}></IonIcon>
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+          </IonHeader>
+          <IonContent>
+          <div className="image-inputs">
+            <div className="image-input">
+              <IonLabel className="input-label">
+                <div className="input-label-title">Funds to deposit</div>
+                <Tooltip text="" />
+                <div>:</div>
+              </IonLabel>
+              <IonButton
+                className="input-button"
+                fill="clear"
+                id="image-width-input"
+              >
+                <IonLabel>
+                  {fundsToDeposit}
+                  <span>PXMT</span>
+                </IonLabel>
+              </IonButton>
+              <StakeAmountPopover
+                onStakeAmountSet={setFundsToDeposit}
+                trigger="image-width-input"
+                max={100}
+                min={1}
+                defaultValue={fundsToDeposit}
+              />
+            </div>
+            </div>
+          </IonContent>
+          <IonFooter>
+            <IonToolbar>
+              <ProjectButton amount={fundsToDeposit} projectAddress={address!} />
+            </IonToolbar>
+          </IonFooter>
+      </IonModal>
 
-        </>
-      )}
       {loadingState === "error" && (
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", color: "red" }}>
           Error loading map
@@ -355,7 +413,10 @@ const MapDisplay: React.FC<Props> = () => {
           Loading map...
         </div>
       )}
-      <PixelDetails />
+
+          <PixelDetails />
+        </>
+      )}
     </div>
   );
 };

@@ -41,14 +41,6 @@ deploy: ## Deploy contract(s) to the specified network
 		--private-key $(PRIVATE_KEY) \
 		--broadcast
 
-verify: ## Verify contract on Etherscan (example)
-	@forge verify-contract \
-		--compiler-version "0.8.18" \
-		--num-of-optimizations 200 \
-		--constructor-args <constructorArgs> \
-		$(CONTRACT_ADDRESS) \
-		src/PixelStaking.sol:PixelStaking \
-		$(ETHERSCAN_API_KEY)
 
 # 5) Utility target: help
 help: ## Show available Make targets
@@ -82,8 +74,8 @@ verify: ## Verify the PixelStaking contract on Bahamut testnet using Blockscout.
 		--rpc-url $(RPC_URL) \
 		--verifier blockscout \
 		--verifier-url 'https://bck.ftnscan.com/api/' \
-		$(STAKING_TOKEN_ADDRESS) \
-		src/PXMTToken.sol:Token
+		'0xa55BE4813031845697adFE6c67cB0a4a750009F9' \
+		src/Project.sol:Project
 
 	# @echo "Verifying PixelStaking contract at $(PIXEL_STAKING_ADDRESS)..."
 	# @forge verify-contract \

@@ -62,8 +62,7 @@ const MapDisplay: React.FC<Props> = () => {
             wheel: false,
           })
           .wheel({
-            smooth: 10,
-            center: new Point(0, 0),
+            smooth: 20,
           })
           .clampZoom({
             minScale: 0.1,
@@ -79,11 +78,10 @@ const MapDisplay: React.FC<Props> = () => {
           .pinch({
             percent: 0.5,
             noDrag: false,
-            factor: 1.5,
+            factor: 1.2,
           })
           .wheel({
-            smooth: 10,
-            center: new Point(0, 0),
+            smooth: 30,
           })
           .clampZoom({
             minScale: 0.1,

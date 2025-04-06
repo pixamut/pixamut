@@ -35,7 +35,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             select(self.model)
             .where(self.model.deleted_at.is_(None))
             .offset(skip)
-            .limit(limit)
+            # .limit(limit)
         )
         return res.scalars().all()
 

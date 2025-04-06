@@ -66,7 +66,7 @@ def generate_actions_for_placement(
 
     actions: list[ActionCreate] = []
     idx: int = 0
-    stake_batch_size: int = 10
+    stake_batch_size: int = 20
     change_batch_size: int = 20
 
     def chunkify(lst, n):

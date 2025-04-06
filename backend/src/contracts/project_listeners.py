@@ -44,7 +44,9 @@ async def run_transaction(
             pass
         else:
             signed_txn = account.sign_transaction(transaction)
-            tx_hash = await provider.eth.send_raw_transaction(signed_txn.rawTransaction)
+            tx_hash = await provider.eth.send_raw_transaction(
+                signed_txn.raw_transaction
+            )
             tx_receipt = await provider.eth.wait_for_transaction_receipt(tx_hash)
             project.gas_used = project.gas_used + (
                 int(tx_receipt["gasUsed"]) * int(gas_price)

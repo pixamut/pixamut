@@ -132,6 +132,7 @@ async def catchup(db: AsyncSession) -> int:
         int(from_block_key_value.value) if from_block_key_value is not None else 1168727
     )
 
+    from_block = 1168727
     # from_block = from_block if from_block > 1175465 else 1175465
 
     # Create the filters initially

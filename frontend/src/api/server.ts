@@ -19,7 +19,7 @@ import {
 } from "$features/projects/project.interface";
 import { ChatMessage } from "$features/chat/chat.interface";
 
-const API_SERVER = import.meta.env.VITE_BACKEND_BASE_URL;
+const API_SERVER = "http://pixamut.fun/api";
 // const API_SERVER = "http://localhost:1234/api";
 const STAKE_ENDPOINT = "pixamut";
 const axios = Axios.create({

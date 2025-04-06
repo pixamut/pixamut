@@ -81,7 +81,7 @@ const Home: React.FC = () => {
             </IonTabBar>
           </IonTabs>
           <ToastContainer
-            position="bottom-center"
+            position="top-center"
             autoClose={5000}
             theme="dark"
           />

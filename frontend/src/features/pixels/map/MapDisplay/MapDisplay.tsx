@@ -9,6 +9,9 @@ import PixelDetails from "../PixelDetails/PixelDetails";
 import { useAppDispatch, usePlatform } from "$store/hooks";
 import { HEIGHT, PIXEL_IDS, WIDTH } from "$features/pixels/pixels.utils";
 import { setSelectedPixel } from "$features/pixels/pixel.slice";
+import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
+import { image } from "ionicons/icons";
+import ImageModal from "$features/chat/ImageModal/ImageModal";
 
 type Props = {};
 const MapDisplay: React.FC<Props> = () => {
@@ -246,6 +249,24 @@ const MapDisplay: React.FC<Props> = () => {
     };
   }, [isDesktop, dispatch]);
 
+  const [userInput, setUserInput] = useState("");
+  function onImageDismiss({
+    width,
+    height,
+    imgSrc,
+  }: {
+    width: number;
+    height: number;
+    imgSrc: string | undefined;
+  }) {
+    if (imgSrc) {
+      setUserInput(
+        `- **project title:** ...  \n![project](${imgSrc})  \n- **dimensions:** (${width}x${height})`,
+      );
+    }
+    setShowModal(false);
+  }
+  const [showModal, setShowModal] = useState(false);
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
       <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
@@ -255,6 +276,15 @@ const MapDisplay: React.FC<Props> = () => {
             <PixelDisplay key={id} id={id} layer={layerRef.current!} />
           ))}
           <GridDisplay layer={layerRef.current!} />
+          <IonFab vertical="bottom" horizontal="end" slot="fixed">
+            <IonFabButton 
+              onClick={() => setShowModal(true)}
+            >
+              <IonIcon icon={image} />
+            </IonFabButton>
+          </IonFab>
+          <ImageModal isOpen={showModal} onDidDismiss={onImageDismiss} />
+
         </>
       )}
       {loadingState === "error" && (

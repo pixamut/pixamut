@@ -10,3 +10,12 @@
         background: red;
     }
 }
+
+@media (max-width: 768px) {
+    ion-button.user-toolbar {
+        ion-label {
+            display: none;
+        }
+    }
+
+}

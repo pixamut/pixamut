@@ -20,6 +20,7 @@ import {
   arrowBackSharp,
   arrowForward,
   arrowForwardSharp,
+  closeSharp,
   saveSharp,
   sendSharp,
 } from "ionicons/icons";
@@ -156,15 +157,15 @@ const ImageModal: React.FC<Props> = ({ isOpen, onDidDismiss }) => {
   return (
     <IonModal
       ref={modal}
-      className="image-modal-page"
+      className={`image-modal-page ${imgSrc ? "has-image" : ""}`}
       isOpen={isOpen}
       onDidDismiss={() => onDidDismiss({ width, height, imgSrc })}
     >
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
+          <IonButtons slot="end">
             <IonButton color="primary" title="Close" onClick={closeModal}>
-              <IonIcon icon={arrowBackSharp} />
+              <IonIcon icon={closeSharp} />
             </IonButton>
           </IonButtons>
           <IonTitle>

@@ -19,8 +19,9 @@ import {
 } from "$features/projects/project.interface";
 import { ChatMessage } from "$features/chat/chat.interface";
 
-const API_SERVER = import.meta.env.VITE_BACKEND_BASE_URL;
-const STAKE_ENDPOINT = "stake";
+// const API_SERVER = import.meta.env.VITE_BACKEND_BASE_URL;
+const API_SERVER = "http://localhost:1234/api";
+const STAKE_ENDPOINT = "pixamut";
 const axios = Axios.create({
   baseURL: `${API_SERVER}`,
   headers: { "Content-Type": "application/json" },
@@ -30,7 +31,7 @@ export const server = {
   // axios config
   addResponseInterceptor: (
     onFulfilled: (value: any) => any,
-    onRejected: (error: any) => any,
+    onRejected: (error: any) => any
   ) => {
     axios.interceptors.response.use(onFulfilled, onRejected);
   },
@@ -90,14 +91,14 @@ export const server = {
   chat: async (messages: Array<ChatMessage>): Promise<string> => {
     const res = await axios.post<{ response: string }>(
       `${STAKE_ENDPOINT}/chat`,
-      { messages },
+      { messages }
     );
     return res.data.response;
   },
   chatCommentator: async (messages: Array<ChatMessage>): Promise<string> => {
     const res = await axios.post<{ response: string }>(
       `${STAKE_ENDPOINT}/chat/commentator`,
-      { messages },
+      { messages }
     );
     return res.data.response;
   },
@@ -115,10 +116,10 @@ export const server = {
   },
 
   getPixelEventsForPixel: async (
-    pixelId: number,
+    pixelId: number
   ): Promise<Array<IPixelEvent>> => {
     const res = await axios.get<Array<IPixelEventInDB>>(
-      `${STAKE_ENDPOINT}/pixelEvents/${pixelId}`,
+      `${STAKE_ENDPOINT}/pixelEvents/${pixelId}`
     );
     return res.data.map((e) => ({
       id: generateId(e.timestamp, e.log_index),
@@ -134,7 +135,7 @@ export const server = {
   // projects
   getProjects: async (): Promise<Array<IProject>> => {
     const res = await axios.get<Array<IProjectInDB>>(
-      `${STAKE_ENDPOINT}/projects`,
+      `${STAKE_ENDPOINT}/projects`
     );
     return res.data.map((p) => ({
       ...p,
@@ -153,7 +154,7 @@ export const server = {
   },
   getProject: async (address: string): Promise<IProject | undefined> => {
     const res = await axios.get<IProjectInDB | undefined>(
-      `${STAKE_ENDPOINT}/projects/${address}`,
+      `${STAKE_ENDPOINT}/projects/${address}`
     );
 
     const p = res.data;
@@ -176,10 +177,10 @@ export const server = {
   },
 
   getProjectMetadata: async (
-    address: string,
+    address: string
   ): Promise<IProjectMetadata | undefined> => {
     const res = await axios.get<IProjectMetadataInDB | undefined>(
-      `${STAKE_ENDPOINT}/projects/metadata/${address}`,
+      `${STAKE_ENDPOINT}/projects/metadata/${address}`
     );
 
     const p = res.data;

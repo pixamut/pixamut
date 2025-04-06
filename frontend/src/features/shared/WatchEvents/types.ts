@@ -12,7 +12,7 @@ type BasicEvent = Log & {
   transactionHash: string;
   logIndex: number;
 };
-type PixelStakedEvent = BasicEvent & {
+export type PixelStakedEvent = BasicEvent & {
   eventName: "PixelStaked";
   args: {
     staker: Address;
@@ -21,7 +21,7 @@ type PixelStakedEvent = BasicEvent & {
     color: number;
   };
 };
-type PixelsStakedEvent = BasicEvent & {
+export type PixelsStakedEvent = BasicEvent & {
   eventName: "PixelsStaked";
   args: {
     staker: Address;
@@ -30,28 +30,28 @@ type PixelsStakedEvent = BasicEvent & {
     colors: number[];
   };
 };
-type PixelUnstakedEvent = BasicEvent & {
+export type PixelUnstakedEvent = BasicEvent & {
   eventName: "PixelUnstaked";
   args: {
     staker: Address;
     pixelId: number;
   };
 };
-type PixelsUnstakedEvent = BasicEvent & {
+export type PixelsUnstakedEvent = BasicEvent & {
   eventName: "PixelsUnstaked";
   args: {
     staker: Address;
     pixelIds: number[];
   };
 };
-type PixelColorChangedEvent = BasicEvent & {
+export type PixelColorChangedEvent = BasicEvent & {
   eventName: "PixelColorChanged";
   args: {
     pixelId: number;
     color: number;
   };
 };
-type PixelsColorChangedEvent = BasicEvent & {
+export type PixelsColorChangedEvent = BasicEvent & {
   eventName: "PixelsColorChanged";
   args: {
     pixelIds: number[];

@@ -1,8 +1,8 @@
-"""initial_db_state
+"""init
 
-Revision ID: 72d318fa5242
+Revision ID: 6a3f3e4830d6
 Revises: 
-Create Date: 2025-04-05 18:49:30.960745
+Create Date: 2025-04-06 01:03:37.204710
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '72d318fa5242'
+revision: str = '6a3f3e4830d6'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,6 +30,17 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_comments_deleted_at'), 'comments', ['deleted_at'], unique=False)
     op.create_index(op.f('ix_comments_updated_at'), 'comments', ['updated_at'], unique=False)
+    op.create_table('keyvalue',
+    sa.Column('key', sa.String(length=255), nullable=False),
+    sa.Column('value', sa.String(length=255), nullable=True),
+    sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('updated_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('deleted_at', sa.TIMESTAMP(timezone=True), nullable=True),
+    sa.PrimaryKeyConstraint('key')
+    )
+    op.create_index(op.f('ix_keyvalue_deleted_at'), 'keyvalue', ['deleted_at'], unique=False)
+    op.create_index(op.f('ix_keyvalue_key'), 'keyvalue', ['key'], unique=False)
+    op.create_index(op.f('ix_keyvalue_updated_at'), 'keyvalue', ['updated_at'], unique=False)
     op.create_table('pixel_events',
     sa.Column('log_index', sa.Integer(), nullable=False),
     sa.Column('hash', sa.String(), nullable=False),
@@ -37,7 +48,7 @@ def upgrade() -> None:
     sa.Column('stake_amount', sa.Numeric(precision=78, scale=0), server_default=sa.text('0'), nullable=False),
     sa.Column('color', sa.Integer(), nullable=False),
     sa.Column('owner', sa.String(), nullable=False),
-    sa.Column('timestamp', sa.DateTime(), nullable=False),
+    sa.Column('timestamp', sa.String(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('deleted_at', sa.TIMESTAMP(timezone=True), nullable=True),
@@ -72,7 +83,7 @@ def upgrade() -> None:
     sa.Column('amount', sa.Numeric(precision=78, scale=0), server_default=sa.text('0'), nullable=False),
     sa.Column('gas', sa.Numeric(precision=78, scale=0), server_default=sa.text('0'), nullable=False),
     sa.Column('user', sa.String(length=100), nullable=False),
-    sa.Column('timestamp', sa.DateTime(), nullable=False),
+    sa.Column('timestamp', sa.String(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('deleted_at', sa.TIMESTAMP(timezone=True), nullable=True),
@@ -203,6 +214,10 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_pixel_events_log_index'), table_name='pixel_events')
     op.drop_index(op.f('ix_pixel_events_deleted_at'), table_name='pixel_events')
     op.drop_table('pixel_events')
+    op.drop_index(op.f('ix_keyvalue_updated_at'), table_name='keyvalue')
+    op.drop_index(op.f('ix_keyvalue_key'), table_name='keyvalue')
+    op.drop_index(op.f('ix_keyvalue_deleted_at'), table_name='keyvalue')
+    op.drop_table('keyvalue')
     op.drop_index(op.f('ix_comments_updated_at'), table_name='comments')
     op.drop_index(op.f('ix_comments_deleted_at'), table_name='comments')
     op.drop_table('comments')

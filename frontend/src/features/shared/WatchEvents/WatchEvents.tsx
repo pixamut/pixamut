@@ -20,12 +20,13 @@ const WatchEvents: React.FC = () => {
   useWatchContractEvent({
     ...CONTRACTS.PixelStaking,
     onLogs(logs) {
+      console.log("pixelStaking", logs);
       const events: IPixelEventUpdate[] = [];
       for (const log of logs) {
         const l = log as unknown as PixelEvent;
         if (l.eventName == "PixelStaked") {
           const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000,
+            Number(l.blockTimestamp) * 1000
           ).toISOString();
           events.push({
             id: generateId(timestamp, l.logIndex),
@@ -39,7 +40,7 @@ const WatchEvents: React.FC = () => {
           });
         } else if (l.eventName == "PixelsStaked") {
           const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000,
+            Number(l.blockTimestamp) * 1000
           ).toISOString();
           for (let i = 0; i < l.args.pixelIds.length; i++) {
             events.push({
@@ -55,7 +56,7 @@ const WatchEvents: React.FC = () => {
           }
         } else if (l.eventName == "PixelUnstaked") {
           const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000,
+            Number(l.blockTimestamp) * 1000
           ).toISOString();
           events.push({
             id: generateId(timestamp, l.logIndex),
@@ -69,7 +70,7 @@ const WatchEvents: React.FC = () => {
           });
         } else if (l.eventName == "PixelsUnstaked") {
           const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000,
+            Number(l.blockTimestamp) * 1000
           ).toISOString();
           for (let i = 0; i < l.args.pixelIds.length; i++) {
             events.push({
@@ -85,7 +86,7 @@ const WatchEvents: React.FC = () => {
           }
         } else if (l.eventName == "PixelColorChanged") {
           const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000,
+            Number(l.blockTimestamp) * 1000
           ).toISOString();
           events.push({
             id: generateId(timestamp, l.logIndex),
@@ -98,7 +99,7 @@ const WatchEvents: React.FC = () => {
         } else if (l.eventName == "PixelsColorChanged") {
           console.log("Pixels colors changed", l);
           const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000,
+            Number(l.blockTimestamp) * 1000
           ).toISOString();
           for (let i = 0; i < l.args.pixelIds.length; i++) {
             events.push({

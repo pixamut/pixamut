@@ -2,6 +2,7 @@ from typing import Any, Tuple
 from datetime import datetime, timezone
 import asyncio
 from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.util import b
 
 from src.models.session import async_session
 from src.models.key_value.key_value_crud import KEYVALUE
@@ -38,6 +39,8 @@ async def parse_pixel_staked_event(event: Any, db: AsyncSession):
     print("new event: ", event, flush=True)
     block = await provider.eth.get_block(event["blockNumber"])
     block_timestamp = block["timestamp"] if "timestamp" in block else 0
+
+    timestamp = datetime.utcfromtimestamp(block_timestamp)
 
     event_data = event["args"]
     dbEvent = PixelEventCreate(
@@ -200,35 +203,36 @@ async def parse_pixel_events(events: list[Any], db) -> str | None:
         return latest_block
 
 
-async def create_event_filters(fromBlock: int) -> list[Any]:
+async def create_event_filters(from_block: int) -> list[Any]:
+    print("creating event filters for ", from_block, flush=True)
     px_staked_event_filter = (
         await pixel_staking_contract.events.PixelStaked.create_filter(
-            fromBlock=fromBlock
+            from_block=from_block
         )
     )
     pxs_staked_event_filter = (
         await pixel_staking_contract.events.PixelsStaked.create_filter(
-            fromBlock=fromBlock
+            from_block=from_block
         )
     )
     px_unstaked_event_filter = (
         await pixel_staking_contract.events.PixelUnstaked.create_filter(
-            fromBlock=fromBlock
+            from_block=from_block
         )
     )
     pxs_unstaked_event_filter = (
         await pixel_staking_contract.events.PixelsUnstaked.create_filter(
-            fromBlock=fromBlock
+            from_block=from_block
         )
     )
     px_color_event_filter = (
         await pixel_staking_contract.events.PixelColorChanged.create_filter(
-            fromBlock=fromBlock
+            from_block=from_block
         )
     )
     pxs_color_event_filter = (
         await pixel_staking_contract.events.PixelsColorChanged.create_filter(
-            fromBlock=fromBlock
+            from_block=from_block
         )
     )
     return [
@@ -241,27 +245,50 @@ async def create_event_filters(fromBlock: int) -> list[Any]:
     ]
 
 
-async def extract_events(filters: list[Any]) -> list[Any]:
+async def extract_events(filters: list[Any], onlyNew: bool = True) -> list[Any]:
     events = []
     for filter in filters:
-        evs = await filter.get_new_entries()
+        if onlyNew:
+            evs = await filter.get_new_entries()
+        else:
+            evs = await filter.get_all_entries()
         for ev in evs:
             events.append(ev)
     return events
 
 
 async def catchup(db: AsyncSession) -> int:
-    fromBlock_key_value = await KEYVALUE.get(db, key=LAST_INDEXED_BLOCK_FOR_EVENTS)
+
+    from_block_key_value = await KEYVALUE.get(db, key=LAST_INDEXED_BLOCK_FOR_EVENTS)
     fallback = await provider.eth.get_block_number()
-    fromBlock = (
-        int(fromBlock_key_value.value)
-        if fromBlock_key_value is not None
-        else fallback - 10_000
+    from_block = (
+        int(from_block_key_value.value)
+        if from_block_key_value is not None and from_block_key_value != ""
+        else 1168727
     )
-    event_filters = await create_event_filters(fromBlock)
-    events = await extract_events(event_filters)
+    event_filters = await create_event_filters(from_block)
+
+    # more stable liquidity pool
+    # advertising in pixels never been done before, only one to give ad places in pixel, examples of crypto punks, we bring revenues. We are leveraging the competive, using that to build a space that more degen friendly.
+    # def fetch_logs_in_batches(start_block, end_block, batch_size=1000):
+    #     all_logs = []
+    #     for block in range(start_block, end_block, batch_size):
+    #         batch_end = min(block + batch_size - 1, end_block)
+    #         batch_logs = web3.eth.get_logs({
+    #             'fromBlock': block,
+    #             'toBlock': batch_end,
+    #             'address': contract_address,
+    #             'topics': [contract.events.MyEvent()._get_event_signature_hex()]
+    #         })
+    #         all_logs.extend(batch_logs)
+    #     return all_logs
+
+    # logs = fetch_logs_in_batches(1000000, web3.eth.block_number)
+    # print(logs)
+
+    events = await extract_events(event_filters, False)
     await parse_pixel_events(events, db)
-    return fromBlock
+    return from_block
 
 
 async def listen_to_pixels_events_loop():

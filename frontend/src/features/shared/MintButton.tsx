@@ -11,7 +11,7 @@ const MintButton: React.FC = () => {
 
   async function click() {
     await writeContractAsync({
-      ...CONTRACTS.IFYSToken,
+      ...CONTRACTS.Token,
       functionName: "mint",
       args: [address, parseEther("200")],
     });

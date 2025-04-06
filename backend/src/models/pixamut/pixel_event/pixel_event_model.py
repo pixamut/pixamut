@@ -4,7 +4,6 @@ from sqlalchemy import (
     Integer,
     BigInteger,
     text,
-    DateTime,
     Numeric,
 )
 from sqlalchemy.orm import Mapped, mapped_column
@@ -25,7 +24,7 @@ class PixelEventModel(Base):
     )
     color: Mapped[int] = mapped_column(Integer, nullable=False)
     owner: Mapped[str] = mapped_column(String, nullable=False, index=True)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, nullable=False, index=True)
+    timestamp: Mapped[str] = mapped_column(String, nullable=False, index=True)
 
     __table_args__ = (PrimaryKeyConstraint("log_index", "timestamp", "pixel_id"),)
 

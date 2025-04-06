@@ -5,7 +5,6 @@ from sqlalchemy import (
     Integer,
     BigInteger,
     text,
-    DateTime,
 )
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -29,7 +28,7 @@ class ProjectEventModel(Base):
         Numeric(precision=78, scale=0), nullable=False, server_default=text("0")
     )
     user: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, nullable=False, index=True)
+    timestamp: Mapped[str] = mapped_column(String, nullable=False, index=True)
 
     __table_args__ = (PrimaryKeyConstraint("log_index", "timestamp"),)
 

@@ -121,34 +121,36 @@ async def parse_project_factory_events(events: list[Any], db) -> str | None:
 
 
 async def catchup(db: AsyncSession) -> int:
-    fromBlock_key_value = await KEYVALUE.get(db, key=LAST_INDEXED_BLOCK_FOR_PROJECTS)
+    from_block_key_value = await KEYVALUE.get(db, key=LAST_INDEXED_BLOCK_FOR_PROJECTS)
     fallback = await provider.eth.get_block_number()
-    fromBlock = (
-        int(fromBlock_key_value.value)
-        if fromBlock_key_value is not None
+    from_block = (
+        int(from_block_key_value.value)
+        if from_block_key_value is not None
         else fallback - 10_000
     )
 
     # Create the filters initially
     project_created_event_filter = (
-        await factory_contract.events.ProjectCreated.create_filter(fromBlock=fromBlock)
+        await factory_contract.events.ProjectCreated.create_filter(
+            from_block=from_block
+        )
     )
     project_deposit_event_filter = await factory_contract.events.Deposit.create_filter(
-        fromBlock=fromBlock
+        from_block=from_block
     )
     project_withdrawal_event_filter = (
-        await factory_contract.events.Withdrawal.create_filter(fromBlock=fromBlock)
+        await factory_contract.events.Withdrawal.create_filter(from_block=from_block)
     )
 
     # Helper function to attempt fetching events and recreate filter if needed
     async def get_events(filter_obj, create_filter_func):
         try:
-            return await filter_obj.get_new_entries()
+            return await filter_obj.get_all_entries()
         except ValueError as e:
             if "filter not found" in str(e):
                 # Recreate the filter if it's dropped
-                new_filter = await create_filter_func(fromBlock=fromBlock)
-                return await new_filter.get_new_entries()
+                new_filter = await create_filter_func(from_block=from_block)
+                return await new_filter.get_all_entries()
             else:
                 raise
 
@@ -174,7 +176,7 @@ async def catchup(db: AsyncSession) -> int:
     events.extend(project_withdrawal_events)
 
     await parse_project_factory_events(events, db)
-    return fromBlock
+    return from_block
 
 
 async def listen_to_project_factory_events_loop():
@@ -183,16 +185,16 @@ async def listen_to_project_factory_events_loop():
         latest_block = await catchup(db)
         project_created_event_filter = (
             await factory_contract.events.ProjectCreated.create_filter(
-                fromBlock=latest_block
+                from_block=latest_block
             )
         )
 
         project_deposit_event_filter = (
-            await factory_contract.events.Deposit.create_filter(fromBlock=latest_block)
+            await factory_contract.events.Deposit.create_filter(from_block=latest_block)
         )
         project_withdrawal_event_filter = (
             await factory_contract.events.Withdrawal.create_filter(
-                fromBlock=latest_block
+                from_block=latest_block
             )
         )
 

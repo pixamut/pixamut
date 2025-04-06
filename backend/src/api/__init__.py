@@ -5,4 +5,4 @@ from . import login, users, pixamut
 api_router = APIRouter()
 api_router.include_router(login.router, tags=["login"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
-api_router.include_router(pixamut.router, prefix="/stake", tags=["stake"])
+api_router.include_router(pixamut.router, prefix="/pixamut", tags=["pixamut"])

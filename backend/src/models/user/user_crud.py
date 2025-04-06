@@ -7,7 +7,7 @@ from sqlalchemy.future import select
 
 from src.core.security import get_password_hash, verify_password
 from .user_model import UserModel
-from .user_schema import UserCreate, UserUpdate
+from .user_schema import UserCreate, UserUpdate, User
 from src.models.pixamut.init import init_pixamut_for_user
 
 from src.models.base.base_crud import CRUDBase

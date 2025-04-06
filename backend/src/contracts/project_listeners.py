@@ -95,6 +95,10 @@ async def run_action(db: AsyncSession, action: ActionCreate, project: ProjectMod
         print("error building transaction", e, flush=True)
 
 
+# lp tokens with zap functionnaly
+# liquid stacking where you can borrow againt your stake
+
+
 async def project_execution_loop():
     print("starting to listen to project execution loop", flush=True)
 

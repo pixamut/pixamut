@@ -20,6 +20,18 @@ ion-modal.modal-default {
     bottom: 0;
     top: 0;
   }
+  &.second {
+    --max-height: 280px;
+    --min-height: 280px;
+    --height: 280px;
+    height: 280px;
+  }
+  &.third {
+    --max-height: 290px;
+    --min-height: 290px;
+    --height: 290px;
+    height: 290px;
+  }
   --ion-backdrop-color: transparent;
   --max-height: 260px;
   --min-height: 260px;

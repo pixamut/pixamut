@@ -34,7 +34,7 @@ import os
 
 
 def get_url():
-    url = os.getenv("DB_URL", "postgresql://pixamut:pixamut@localhost:5432/pixamut")
+    url = "postgresql://pixamut:pixamut@localhost:5432/pixamut"
     if url is None:
         raise Exception("DB_URL not defined")
     return url

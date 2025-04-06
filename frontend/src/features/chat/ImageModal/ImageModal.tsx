@@ -33,6 +33,7 @@ import { useIFYSBalance } from "$features/shared/hooks/useIFYSBalance";
 import { selectProjectByAddress } from "$features/projects/project.slice";
 import ProjectMap from "$features/projects/ProjectMap/ProjectMap";
 import StakeAmountPopover from "$features/pixels/modals/StakeAmountPopover/StakeAmountPopover";
+import NamePopover from "$features/pixels/modals/NamePopover/NamePopover";
 type Props = {
   onDidDismiss: (data: {
     width: number;
@@ -44,6 +45,7 @@ type Props = {
 const ImageModal: React.FC<Props> = ({ isOpen, onDidDismiss }) => {
   const modal = useRef<HTMLIonModalElement>(null);
 
+  const [name, setName] = useState<string>("");
   const [width, setWidth] = useState<number>(30);
   const [height, setHeight] = useState<number>(30);
   const [ratio, setRatio] = useState<number>(1);
@@ -53,6 +55,9 @@ const ImageModal: React.FC<Props> = ({ isOpen, onDidDismiss }) => {
   );
   const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  async function updateName(newName: string) {
+    setName(newName);
+  }
   async function updateWidth(newWidth: number) {
     if (newWidth > 100) return;
     const h = newWidth;
@@ -218,6 +223,28 @@ const ImageModal: React.FC<Props> = ({ isOpen, onDidDismiss }) => {
             </div>
           </div>
           <div className="image-inputs">
+
+          <div className="image-input">
+              <IonLabel className="input-label">
+                <div className="input-label-title">name</div>
+                <Tooltip text="" />
+                <div>:</div>
+              </IonLabel>
+              <IonButton
+                className="input-button"
+                fill="clear"
+                id="image-name-input"
+              >
+                <IonLabel>
+                  {name}
+                </IonLabel>
+              </IonButton>
+              <NamePopover
+                onNameSet={updateName}
+                trigger="image-name-input"
+                defaultValue={name}
+              />
+            </div>
             <div className="image-input">
               <IonLabel className="input-label">
                 <div className="input-label-title">width</div>

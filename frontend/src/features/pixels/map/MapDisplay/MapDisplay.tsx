@@ -270,11 +270,13 @@ const MapDisplay: React.FC<Props> = () => {
       // Prepare for animated display
       let currentIndex = 0;
 
-      setChatHistory((prev) => [
+      await setChatHistory((prev) => [
         ...prev,
         { role: "assistant", content: fullResponse },
       ]);
-      setIsAnswering(false);
+      await setIsAnswering(false);
+
+    setShowModal(false);
       // Simulate a typing effect (adjust delay as needed)
       // const interval = setInterval(() => {
       //   setAnimatedResponse((prev) => prev + fullResponse[currentIndex]);
@@ -290,6 +292,7 @@ const MapDisplay: React.FC<Props> = () => {
       //   }
       // }, 50);
     } catch (err) {
+      setShowModal(false);
       console.error("Error fetching AI response:", err);
     }
   };  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
@@ -301,19 +304,25 @@ const MapDisplay: React.FC<Props> = () => {
     width,
     height,
     imgSrc,
+    name,
   }: {
     width: number;
     height: number;
     imgSrc: string | undefined;
+    name: string;
   }) {
     console.log('onImageDismiss', imgSrc, width, height);
     if (imgSrc) {
       setUserInput(
-        `- **project title:** ...  \n![project](${imgSrc})  \n- **dimensions:** (${width}x${height})`,
+        `- **project title:** ${name}  \n![project](${imgSrc})  \n- **dimensions:** (${width}x${height})`,
       );
       sendMessage();
     }
+    else {
+
     setShowModal(false);
+    }
+    
   }
   const [showModal, setShowModal] = useState(false);
   return (

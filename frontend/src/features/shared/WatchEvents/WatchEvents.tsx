@@ -14,20 +14,22 @@ import {
   refreshProject,
 } from "$features/projects/project.slice";
 import { PixelEvent } from "./types";
+import {
+  logToWellFormedEventPixelStaking,
+  logToWellFormedEventProjectFactory,
+} from "./utils";
 
 const WatchEvents: React.FC = () => {
   const dispatch = useAppDispatch();
   useWatchContractEvent({
     ...CONTRACTS.PixelStaking,
     onLogs(logs) {
-      console.log("pixelStaking", logs);
       const events: IPixelEventUpdate[] = [];
+      const timestamp = new Date().toISOString();
       for (const log of logs) {
-        const l = log as unknown as PixelEvent;
+        const l = logToWellFormedEventPixelStaking(log);
+        console.log("pixelStaking", l);
         if (l.eventName == "PixelStaked") {
-          const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000
-          ).toISOString();
           events.push({
             id: generateId(timestamp, l.logIndex),
             logIndex: l.logIndex,
@@ -39,9 +41,6 @@ const WatchEvents: React.FC = () => {
             timestamp,
           });
         } else if (l.eventName == "PixelsStaked") {
-          const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000
-          ).toISOString();
           for (let i = 0; i < l.args.pixelIds.length; i++) {
             events.push({
               id: generateId(timestamp, l.logIndex),
@@ -55,9 +54,6 @@ const WatchEvents: React.FC = () => {
             });
           }
         } else if (l.eventName == "PixelUnstaked") {
-          const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000
-          ).toISOString();
           events.push({
             id: generateId(timestamp, l.logIndex),
             logIndex: l.logIndex,
@@ -69,9 +65,6 @@ const WatchEvents: React.FC = () => {
             timestamp,
           });
         } else if (l.eventName == "PixelsUnstaked") {
-          const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000
-          ).toISOString();
           for (let i = 0; i < l.args.pixelIds.length; i++) {
             events.push({
               id: generateId(timestamp, l.logIndex),
@@ -85,9 +78,6 @@ const WatchEvents: React.FC = () => {
             });
           }
         } else if (l.eventName == "PixelColorChanged") {
-          const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000
-          ).toISOString();
           events.push({
             id: generateId(timestamp, l.logIndex),
             logIndex: l.logIndex,
@@ -97,10 +87,6 @@ const WatchEvents: React.FC = () => {
             timestamp,
           });
         } else if (l.eventName == "PixelsColorChanged") {
-          console.log("Pixels colors changed", l);
-          const timestamp = new Date(
-            Number(l.blockTimestamp) * 1000
-          ).toISOString();
           for (let i = 0; i < l.args.pixelIds.length; i++) {
             events.push({
               id: generateId(timestamp, l.logIndex),
@@ -121,7 +107,8 @@ const WatchEvents: React.FC = () => {
     ...CONTRACTS.ProjectFactory,
     onLogs: async (logs) => {
       for (const log of logs) {
-        const address = (log as any).args.projectAddress;
+        const l = logToWellFormedEventProjectFactory(log);
+        const address = (l as any).args.projectAddress;
         await new Promise((resolve) => setTimeout(resolve, 2000));
         dispatch(refreshProject(address));
       }

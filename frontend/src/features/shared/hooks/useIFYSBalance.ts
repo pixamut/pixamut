@@ -5,7 +5,7 @@ import { formatEther } from "viem";
 export function useIFYSBalance() {
   const { address: account } = useAccount();
   const { data: balance } = useReadContract({
-    ...CONTRACTS.IFYSToken,
+    ...CONTRACTS.Token,
     functionName: "balanceOf",
     args: [account],
   }) as { data: bigint | undefined };

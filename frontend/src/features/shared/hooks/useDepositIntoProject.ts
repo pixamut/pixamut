@@ -37,7 +37,7 @@ export function useDepositIntoProject({
   } = useWriteContract();
 
   const { data: allowance, refetch } = useReadContract({
-    ...CONTRACTS.IFYSToken,
+    ...CONTRACTS.Token,
     functionName: "allowance",
     args: [account, projectAddress],
   });
@@ -54,7 +54,7 @@ export function useDepositIntoProject({
   const approve = async () => {
     try {
       await writeContractAsync({
-        ...CONTRACTS.IFYSToken,
+        ...CONTRACTS.Token,
         functionName: "approve",
         args: [projectAddress, maxUint256],
       });

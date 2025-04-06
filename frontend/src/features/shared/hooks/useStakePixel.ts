@@ -38,7 +38,7 @@ export function useStakePixel({
   } = useWriteContract();
 
   const { data: allowance, refetch } = useReadContract({
-    ...CONTRACTS.IFYSToken,
+    ...CONTRACTS.Token,
     functionName: "allowance",
     args: [account, CONTRACTS.PixelStaking.address],
   });
@@ -51,7 +51,7 @@ export function useStakePixel({
   const approve = async () => {
     try {
       await writeContractAsync({
-        ...CONTRACTS.IFYSToken,
+        ...CONTRACTS.Token,
         functionName: "approve",
         args: [CONTRACTS.PixelStaking.address, maxUint256],
       });

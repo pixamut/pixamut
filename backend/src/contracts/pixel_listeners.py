@@ -266,6 +266,8 @@ async def catchup(db: AsyncSession) -> int:
         if from_block_key_value is not None and from_block_key_value != ""
         else 1168727
     )
+
+    from_block = 1175465 if from_block < 1175455 else from_block
     event_filters = await create_event_filters(from_block)
 
     # more stable liquidity pool

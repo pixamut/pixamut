@@ -208,7 +208,7 @@ async def project_execution_loop():
                                 # wait between tx
                                 # await asyncio.sleep(2)
 
-                            await asyncio.sleep(1)
+                            # await asyncio.sleep(1)
                             if len(actions) > 0:
                                 print(
                                     "gas used",
@@ -245,8 +245,8 @@ async def project_execution_loop():
                             flush=True,
                         )
                     # wait between projects
-                    await asyncio.sleep(1)
+                    # await asyncio.sleep(1)
                 except Exception as e:
                     print("Error executing project:", str(e), flush=True)
         # wait between complete projects sweep
-        await asyncio.sleep(5)
+        # await asyncio.sleep(5)

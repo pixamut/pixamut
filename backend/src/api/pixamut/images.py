@@ -27,4 +27,4 @@ def process_image(req: ProjectCreate, db=Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=400, detail="Could not open image") from e
 
-    image_grid = image_to_np(pil_img)
+    # image_grid = image_to_np(pil_img)

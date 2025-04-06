@@ -3,6 +3,7 @@ import {
   IonApp,
   IonButtons,
   IonHeader,
+  IonMenuButton,
   IonRouterOutlet,
   IonToolbar,
   setupIonicReact,
@@ -51,6 +52,10 @@ const App: React.FC = () => (
     <Providers>
       <IonHeader>
         <IonToolbar>
+
+        <IonButtons slot="start">
+              <IonMenuButton color="primary"></IonMenuButton>
+            </IonButtons>
           <div id="toolbar">
             <div className="logo hide-md">
               <div id="logo-text">

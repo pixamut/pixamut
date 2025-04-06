@@ -35,6 +35,14 @@
                 margin: 0px 16px;
                 color: var(--sub-color);
             }
+
+            canvas {
+
+    width: 100px;
+    height: 100%;
+    max-height: 200px;
+    object-fit: contain;
+            }
         }
         .current-pixel {
             width: 100%;

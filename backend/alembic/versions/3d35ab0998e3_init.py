@@ -1,18 +1,18 @@
 """init
 
-Revision ID: 6a3f3e4830d6
+Revision ID: 3d35ab0998e3
 Revises: 
-Create Date: 2025-04-06 01:03:37.204710
+Create Date: 2025-04-06 14:23:52.466059
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '6a3f3e4830d6'
+revision: str = '3d35ab0998e3'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -119,8 +119,8 @@ def upgrade() -> None:
     sa.Column('address', sa.String(length=100), nullable=False),
     sa.Column('title', sa.String(length=255), nullable=False),
     sa.Column('image', sa.Text(), nullable=False),
-    sa.Column('image_grid', sa.LargeBinary(), nullable=False),
-    sa.Column('image_mask', sa.LargeBinary(), nullable=False),
+    sa.Column('image_grid', postgresql.BYTEA(), nullable=False),
+    sa.Column('image_mask', postgresql.BYTEA(), nullable=False),
     sa.Column('image_h', sa.Integer(), autoincrement=False, nullable=False),
     sa.Column('image_w', sa.Integer(), autoincrement=False, nullable=False),
     sa.Column('nbr_active_pixels', sa.Integer(), autoincrement=False, nullable=False),

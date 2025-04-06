@@ -9,6 +9,7 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import BYTEA
 
 from src.models.base.base_model import Base
 
@@ -19,8 +20,8 @@ class ProjectModel(Base):
     address: Mapped[str] = mapped_column(String(length=100), nullable=False, index=True)
     title: Mapped[str] = mapped_column(String(length=255), nullable=False, index=True)
     image: Mapped[str] = mapped_column(Text, nullable=False, index=False)
-    image_grid: Mapped[bytes] = mapped_column(LargeBinary, nullable=False, index=False)
-    image_mask: Mapped[bytes] = mapped_column(LargeBinary, nullable=False, index=False)
+    image_grid: Mapped[bytes] = mapped_column(BYTEA, nullable=False, index=False)
+    image_mask: Mapped[bytes] = mapped_column(BYTEA, nullable=False, index=False)
     image_h: Mapped[int] = mapped_column(Integer, nullable=False, autoincrement=False)
     image_w: Mapped[int] = mapped_column(Integer, nullable=False, autoincrement=False)
     nbr_active_pixels: Mapped[int] = mapped_column(

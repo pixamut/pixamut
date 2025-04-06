@@ -134,7 +134,7 @@ async def catchup(db: AsyncSession) -> int:
         else fallback - 10_000
     )
 
-    from_block = 1168727
+    from_block = from_block if from_block > 1175465 else 1175465
 
     # Create the filters initially
     project_created_event_filter = (

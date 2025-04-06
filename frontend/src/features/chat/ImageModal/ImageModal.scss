@@ -50,9 +50,11 @@ ion-modal.image-modal-page {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        img {
-          width: 300px;
-          height: 300px;
+        img {    
+            width: 100%;
+            height: calc(100vh - 409px);
+            object-fit: contain;
+            border: 1px solid white;
         }
       }
     }

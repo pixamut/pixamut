@@ -267,9 +267,11 @@ const ImageModal: React.FC<Props> = ({ isOpen, onDidDismiss }) => {
               />
             </div>
           </div>
-          <IonButton disabled={!imgSrc} onClick={closeModal}>
-            <IonLabel>upload</IonLabel>
-          </IonButton>
+          {imgSrc && (
+            <IonButton disabled={!imgSrc} onClick={closeModal}>
+              <IonLabel>upload</IonLabel>
+            </IonButton>
+          )}
         </div>
       </IonContent>
     </IonModal>

@@ -12,6 +12,8 @@ import { setSelectedPixel } from "$features/pixels/pixel.slice";
 import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
 import { image } from "ionicons/icons";
 import ImageModal from "$features/chat/ImageModal/ImageModal";
+import { ChatMessage } from "$features/chat/chat.interface";
+import { server } from "$api/server";
 
 type Props = {};
 const MapDisplay: React.FC<Props> = () => {
@@ -249,6 +251,51 @@ const MapDisplay: React.FC<Props> = () => {
     };
   }, [isDesktop, dispatch]);
 
+  const sendMessage = async () => {
+    if (!userInput.trim()) return;
+
+    // Append the user message to chat history
+    const updatedHistory: ChatMessage[] = [
+      ...chatHistory,
+      { role: "user", content: userInput },
+    ];
+    setChatHistory(updatedHistory);
+    setUserInput("");
+    setIsAnswering(true);
+
+    try {
+      // Send the full conversation to the backend
+      const fullResponse = await server.chat(updatedHistory);
+
+      // Prepare for animated display
+      let currentIndex = 0;
+
+      setChatHistory((prev) => [
+        ...prev,
+        { role: "assistant", content: fullResponse },
+      ]);
+      setIsAnswering(false);
+      // Simulate a typing effect (adjust delay as needed)
+      // const interval = setInterval(() => {
+      //   setAnimatedResponse((prev) => prev + fullResponse[currentIndex]);
+      //   currentIndex++;
+      //   if (currentIndex >= fullResponse.length) {
+      //     clearInterval(interval);
+      //     // Once done, add the complete AI response to chat history
+      //     setChatHistory((prev) => [
+      //       ...prev,
+      //       { role: "assistant", content: fullResponse },
+      //     ]);
+      //     setIsAnimating(false);
+      //   }
+      // }, 50);
+    } catch (err) {
+      console.error("Error fetching AI response:", err);
+    }
+  };  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+
+  const [isAnswering, setIsAnswering] = useState(false);
+
   const [userInput, setUserInput] = useState("");
   function onImageDismiss({
     width,
@@ -259,10 +306,12 @@ const MapDisplay: React.FC<Props> = () => {
     height: number;
     imgSrc: string | undefined;
   }) {
+    console.log('onImageDismiss', imgSrc, width, height);
     if (imgSrc) {
       setUserInput(
         `- **project title:** ...  \n![project](${imgSrc})  \n- **dimensions:** (${width}x${height})`,
       );
+      sendMessage();
     }
     setShowModal(false);
   }

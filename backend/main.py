@@ -7,6 +7,8 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import RedirectResponse
 
+import openai
+
 from src.core.config import config
 from src.api import api_router
 from src.contracts.pixel_listeners import listen_to_pixels_events_loop
@@ -17,6 +19,7 @@ from src.contracts.project_listeners import project_execution_loop
 from src.ai.placement.init import init_grid_arrays
 from src.contracts.provider import provider_connect
 
+openai.api_key = config.OPENAI_KEY
 
 app = FastAPI()
 

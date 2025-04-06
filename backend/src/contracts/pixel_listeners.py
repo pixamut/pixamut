@@ -267,7 +267,7 @@ async def catchup(db: AsyncSession) -> int:
         else 1168727
     )
 
-    from_block = 1175465 if from_block < 1175455 else from_block
+    # from_block = 1175465 if from_block < 1175455 else from_block
     event_filters = await create_event_filters(from_block)
 
     # more stable liquidity pool

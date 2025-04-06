@@ -129,6 +129,8 @@ async def catchup(db: AsyncSession) -> int:
         else fallback - 10_000
     )
 
+    from_block = 1168727
+
     # Create the filters initially
     project_created_event_filter = (
         await factory_contract.events.ProjectCreated.create_filter(

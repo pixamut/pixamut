@@ -8,6 +8,7 @@ from PIL import Image
 def image_to_np(
     imageUrl: str, alpha_threshold: int = 128
 ) -> Tuple[np.ndarray, np.ndarray]:
+    print("image to np", flush=True)
     image_data = imageUrl.split(",")[1]
     image_bytes = base64.b64decode(image_data)
     image = Image.open(io.BytesIO(image_bytes)).convert("RGBA")

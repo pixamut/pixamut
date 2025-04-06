@@ -3,12 +3,12 @@ import { memo, useState } from "react";
 import { useAccount, useWriteContract } from "wagmi";
 import { CONTRACTS } from "./hooks/utils";
 import { parseEther } from "viem";
-import { useIFYSBalance } from "./hooks/useIFYSBalance";
+import { usePXMTBalance } from "./hooks/usePXMTBalance";
 
 const MintButton: React.FC = () => {
   const { address } = useAccount();
   const [isLoading, setIsLoading] = useState(false);
-  const balance = useIFYSBalance();
+  const balance = usePXMTBalance();
 
   const { writeContractAsync } = useWriteContract();
 

@@ -60,7 +60,7 @@ const ProjectDisplay: React.FC<Props> = ({ projectAddress }) => {
                 <div>:</div>
                 <div className="value">
                   {Math.round(used)}/{Math.round(project.balance)}
-                  <span className="unit"> IFYS</span>
+                  <span className="unit"> PXMT</span>
                 </div>
               </div>
               <div className="row">

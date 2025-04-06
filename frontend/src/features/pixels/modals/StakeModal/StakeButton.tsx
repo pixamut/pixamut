@@ -1,4 +1,4 @@
-import { useIFYSBalance } from "$features/shared/hooks/useIFYSBalance";
+import { usePXMTBalance } from "$features/shared/hooks/usePXMTBalance";
 import { useStakePixel } from "$features/shared/hooks/useStakePixel";
 import { IonButton, IonIcon, IonLabel, IonSpinner } from "@ionic/react";
 import { alertSharp, sendSharp } from "ionicons/icons";

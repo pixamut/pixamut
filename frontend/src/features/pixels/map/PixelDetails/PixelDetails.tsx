@@ -124,7 +124,7 @@ const PixelDetails: React.FC<Props> = ({}) => {
                     <div className="info-separator">:</div>
                     <div className="info-value">
                       {pixel?.stakeAmount!.toFixed(2)}{" "}
-                      <div className="unit">IFYS</div>
+                      <div className="unit">PXMT</div>
                     </div>
                   </div>
                   <div className="info">

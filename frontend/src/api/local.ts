@@ -3,7 +3,7 @@ import { IUser } from "../features/user/user.interface";
 import { IPixelEvent } from "$features/pixels/pixel-event.interface";
 
 const storage = new Storage({
-  name: "stakeifys",
+  name: "stakepxmt",
   driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
 });
 storage.create();

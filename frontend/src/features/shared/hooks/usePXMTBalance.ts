@@ -2,7 +2,7 @@ import { useAccount, useReadContract } from "wagmi";
 import { CONTRACTS } from "./utils";
 import { formatEther } from "viem";
 
-export function useIFYSBalance() {
+export function usePXMTBalance() {
   const { address: account } = useAccount();
   const { data: balance } = useReadContract({
     ...CONTRACTS.Token,

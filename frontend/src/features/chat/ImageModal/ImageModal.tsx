@@ -29,7 +29,7 @@ import "./ImageModal.scss";
 import { memo, useEffect, useRef, useState } from "react";
 import Tooltip from "$features/shared/Tooltip/Tooltip";
 import { shortenAddress } from "$features/shared/utils";
-import { useIFYSBalance } from "$features/shared/hooks/useIFYSBalance";
+import { usePXMTBalance } from "$features/shared/hooks/usePXMTBalance";
 import { selectProjectByAddress } from "$features/projects/project.slice";
 import ProjectMap from "$features/projects/ProjectMap/ProjectMap";
 import StakeAmountPopover from "$features/pixels/modals/StakeAmountPopover/StakeAmountPopover";

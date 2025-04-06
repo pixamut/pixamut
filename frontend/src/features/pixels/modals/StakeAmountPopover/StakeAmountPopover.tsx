@@ -9,7 +9,7 @@ import {
 import { useRef, useState } from "react";
 
 import "./StakeAmountPopover.scss";
-import { useIFYSBalance } from "$features/shared/hooks/useIFYSBalance";
+import { usePXMTBalance } from "$features/shared/hooks/usePXMTBalance";
 type Props = {
   trigger: string;
   onStakeAmountSet: (amount: number) => void;
@@ -27,7 +27,7 @@ const StakeAmountPopover: React.FC<Props> = ({
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
 
-  const balance = useIFYSBalance();
+  const balance = usePXMTBalance();
 
   function onWillPresent() {
     setTimeout(() => {
@@ -68,7 +68,7 @@ const StakeAmountPopover: React.FC<Props> = ({
               min={min || 0}
             />
             <div className="hint">
-              <div className="amount">{balance} IFYS</div>
+              <div className="amount">{balance} PXMT</div>
               <IonButton fill="clear" onClick={setMax}>
                 <IonLabel>max</IonLabel>
               </IonButton>

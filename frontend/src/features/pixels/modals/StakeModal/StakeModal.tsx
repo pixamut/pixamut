@@ -24,7 +24,7 @@ import ColorPickerPopover from "../ColorPickerPopover/ColorPickerPopover";
 import { colorToString } from "$features/shared/utils";
 import { useStakePixel } from "$features/shared/hooks/useStakePixel";
 import StakeButton from "./StakeButton";
-import { useIFYSBalance } from "$features/shared/hooks/useIFYSBalance";
+import { usePXMTBalance } from "$features/shared/hooks/usePXMTBalance";
 type Props = {
   pixelId: number;
 };
@@ -35,7 +35,7 @@ const StakeModal: React.FC<Props> = ({ pixelId }) => {
   const [color, setColor] = useState<number>(pixel?.color ?? 0x000000);
   const [amount, setAmount] = useState<number>(0);
 
-  const balance = useIFYSBalance();
+  const balance = usePXMTBalance();
 
   useEffect(() => {
     setColor(pixel?.color ?? 0x000000);

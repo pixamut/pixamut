@@ -55,7 +55,7 @@ export function useStakePixel({
         functionName: "approve",
         args: [CONTRACTS.PixelStaking.address, maxUint256],
       });
-      toast.success("Approved max IFYS to pixelStaking contract");
+      toast.success("Approved max PXMT to pixelStaking contract");
       await refetch();
     } catch (error: any) {
       console.error("Approval error: ", error);

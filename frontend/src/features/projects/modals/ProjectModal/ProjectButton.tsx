@@ -1,5 +1,5 @@
 import { useDepositIntoProject } from "$features/shared/hooks/useDepositIntoProject";
-import { useIFYSBalance } from "$features/shared/hooks/useIFYSBalance";
+import { usePXMTBalance } from "$features/shared/hooks/usePXMTBalance";
 import { useStakePixel } from "$features/shared/hooks/useStakePixel";
 import { IonButton, IonIcon, IonLabel, IonSpinner } from "@ionic/react";
 import { alertSharp, sendSharp } from "ionicons/icons";
@@ -10,7 +10,7 @@ type Props = {
   projectAddress: string;
 };
 const ProjectButton: React.FC<Props> = ({ projectAddress, amount }) => {
-  const balance = useIFYSBalance();
+  const balance = usePXMTBalance();
   const { deposit, approve, isLoading, isSuccess, error, needsApproval } =
     useDepositIntoProject({
       projectAddress: projectAddress as Address,

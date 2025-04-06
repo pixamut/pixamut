@@ -1,6 +1,6 @@
 import { Address } from "viem";
 import PixelStakingJSON from "$abis/PixelStaking.json";
-import IFYSTokenJSON from "$abis/Token.json";
+import PXMTTokenJSON from "$abis/Token.json";
 import ProjectFactoryJSON from "$abis/ProjectFactory.json";
 
 export const CONTRACTS = {
@@ -12,7 +12,7 @@ export const CONTRACTS = {
   Token: {
     address:
       "0x1c679bdf9e83Ce9e3C46A1E3aE8dD6B55A4A3f8A" satisfies Address as Address,
-    abi: IFYSTokenJSON.abi,
+    abi: PXMTTokenJSON.abi,
   },
   ProjectFactory: {
     address:

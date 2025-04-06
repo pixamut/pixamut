@@ -31,7 +31,7 @@ import ActivityChart from "$features/pixels/map/PixelDetails/ActivityChart/Activ
 import { ResponsiveContainer } from "recharts";
 import { colorToString, shortenAddress } from "$features/shared/utils";
 import { useStakePixel } from "$features/shared/hooks/useStakePixel";
-import { useIFYSBalance } from "$features/shared/hooks/useIFYSBalance";
+import { usePXMTBalance } from "$features/shared/hooks/usePXMTBalance";
 import ProjectButton from "./ProjectButton";
 import { selectProjectByAddress } from "$features/projects/project.slice";
 import ProjectMap from "$features/projects/ProjectMap/ProjectMap";
@@ -56,7 +56,7 @@ const ProjectModal: React.FC<Props> = ({
 
   const [amount, setAmount] = useState<number>(0);
 
-  const balance = useIFYSBalance();
+  const balance = usePXMTBalance();
 
   function closeModal() {
     modal.current?.dismiss();
@@ -105,7 +105,7 @@ const ProjectModal: React.FC<Props> = ({
                 </IonLabel>
                 <div className="input-text">
                   <IonLabel>
-                    {project.balance}/{project.balance} <span>IFYS</span>
+                    {project.balance}/{project.balance} <span>PXMT</span>
                   </IonLabel>
                 </div>
               </div>

@@ -41,9 +41,11 @@ async def parse_project_created_event(event: Any, db: AsyncSession):
         image_mask = image_mask_np.tobytes()
 
         print("nbr pixels", nbr_active_pixels, "/", image_h * image_w, flush=True)
+        title = event_data["title"]
+        title = title if title is not None and len(title) > 2 else "Unnamed"
         dbProject: ProjectCreate = ProjectCreate(
             address=event_data["projectAddress"].lower(),
-            title=event_data["title"],
+            title=title,
             creator=event_data["creator"].lower(),
             image=image_base64,
             image_grid=image_grid,

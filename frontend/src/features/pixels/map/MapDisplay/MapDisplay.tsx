@@ -94,13 +94,15 @@ const MapDisplay: React.FC<Props> = () => {
       // Adjust scale calculation to better handle mobile screens
       const widthScale = containerRef.current.clientWidth / worldWidth;
       const heightScale = containerRef.current.clientHeight / worldHeight;
-      const scale = widthScale * 0.45;
+      const scale = Math.min(widthScale, heightScale) * 0.45;
+      const scaleX = widthScale * 0.45;
+      const scaleY = heightScale * 0.45;
 
       viewport.setZoom(scale);
       
       // Center the viewport with offset to account for the container size
-      const offsetX = (containerRef.current.clientWidth - (worldWidth * scale)) / 2.2;
-      const offsetY = (containerRef.current.clientHeight - (worldHeight * scale)) / 2.2;
+      const offsetX = (containerRef.current.clientWidth - (worldWidth * scaleX)) / 2.2;
+      const offsetY = (containerRef.current.clientHeight - (worldHeight * scaleY)) / 2.2;
       viewport.moveCenter(
         worldWidth / 2 + offsetX / scale,
         worldHeight / 2 + offsetY / scale

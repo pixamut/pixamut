@@ -10,7 +10,7 @@ from openai.types.chat import (
     ChatCompletionAssistantMessageParam,
     ChatCompletionUserMessageParam,
 )
-import openai
+from src.ai.agents.openai import openai_client
 
 from src.api.deps import get_db
 from src.models.pixamut.chat_schema import ChatRequest, ChatMessage
@@ -104,7 +104,7 @@ async def comment_endpoint(chat: ChatRequest, db=Depends(get_db)):
         [{"role": msg.role, "content": msg.content} for msg in chat.messages]
     )
 
-    response = await openai.AsyncClient.chat.completions.create(
+    response = openai_client.chat.completions.create(
         model="gpt-3.5-turbo", messages=chat_messages, temperature=0.7
     )
 

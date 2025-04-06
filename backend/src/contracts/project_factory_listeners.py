@@ -129,12 +129,10 @@ async def catchup(db: AsyncSession) -> int:
     from_block_key_value = await KEYVALUE.get(db, key=LAST_INDEXED_BLOCK_FOR_PROJECTS)
     fallback = await provider.eth.get_block_number()
     from_block = (
-        int(from_block_key_value.value)
-        if from_block_key_value is not None
-        else fallback - 10_000
+        int(from_block_key_value.value) if from_block_key_value is not None else 1168727
     )
 
-    from_block = from_block if from_block > 1175465 else 1175465
+    # from_block = from_block if from_block > 1175465 else 1175465
 
     # Create the filters initially
     project_created_event_filter = (

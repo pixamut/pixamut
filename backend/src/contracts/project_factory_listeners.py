@@ -53,6 +53,8 @@ async def parse_project_created_event(event: Any, db: AsyncSession):
             nbr_active_pixels=nbr_active_pixels,
             gas_available=event_data["initialgas"],
         )
+        print("event_data", event_data, flush=True)
+
         print("saving to database", dbProject.image, flush=True)
         await PROJECTS.create(db, obj_in=dbProject)
     except Exception as e:

@@ -57,7 +57,7 @@ const PixelDetails: React.FC<Props> = ({}) => {
 
   return (
     <>
-      <IonModal isOpen={!!pixel}>
+      <IonModal isOpen={!!pixel} onDidDismiss={() => dispatch(setSelectedPixel(undefined))}>
         <IonHeader>
           <IonToolbar className="header-toolbar">
             <IonButtons slot="start">

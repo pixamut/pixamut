@@ -20,5 +20,5 @@ def image_to_np(
         + image_array[:, :, 2].astype(np.uint32)
     )
     alpha = image_array[:, :, 3]
-    image_mask = (alpha >= alpha_threshold).astype(np.bool)
+    image_mask = (alpha >= alpha_threshold).astype(np.bool_)
     return image_grid, image_mask

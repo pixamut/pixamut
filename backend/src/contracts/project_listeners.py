@@ -149,7 +149,7 @@ async def project_execution_loop():
                         project.image_grid, dtype=np.uint32
                     ).reshape(project.image_h, project.image_w)
                     image_mask = np.frombuffer(
-                        project.image_mask, dtype=np.bool
+                        project.image_mask, dtype=np.bool_
                     ).reshape(project.image_h, project.image_w)
                     image_mask = image_mask.astype(bool)
 

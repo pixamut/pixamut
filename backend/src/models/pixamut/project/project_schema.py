@@ -32,8 +32,8 @@ class ProjectBase(BaseModel):
     address: str
     title: str
     image: str
-    image_grid: bytes
-    image_mask: bytes
+    image_grid: bytes | None
+    image_mask: bytes | None
     image_h: int
     image_w: int
     nbr_active_pixels: int
